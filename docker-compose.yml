@@ -1,0 +1,41 @@
+version: '3'
+services:
+
+  backend:
+    build:
+      context: ./backend
+    volumes:
+      - type: bind 
+        source: ./backend
+        target: /usr/src/app
+    ports:
+      - 3031:3031
+    tty: true
+    stdin_open: true 
+    depends_on:
+      - db
+      
+  frontend:
+    build:
+      context: ./frontend
+    volumes:
+      - type: bind
+        source: ./frontend
+        target: /usr/src/frontend
+    ports: 
+      - 3000:3000
+    depends_on:
+      - backend
+    environment:
+      - WATCHPACK_POLLING=true 
+  
+  db:
+    image: mongo
+    ports:
+      - 27017:27017
+    volumes: 
+      - db-volume:/data/db
+    command: mongod --quiet --logpath /dev/null
+
+volumes:
+  db-volume:
