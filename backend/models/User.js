@@ -22,10 +22,11 @@ const User = new Schema({
 User.pre('save', async function(next) { 
     const salt = await bcrypt.genSalt(10);
     this.password = await bcrypt.hash(this.password, salt)
+    console.log('password hashed')
     next()
 })
 
-User.methods.createJWT = function() { 
+User.methods.createJWT = async function() { 
     return jwt.sign({user_id: this._id}, 'jwtsecrettoken',{expiresIn: '2d'})
 }
 

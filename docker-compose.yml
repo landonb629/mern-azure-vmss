@@ -14,7 +14,8 @@ services:
     stdin_open: true 
     depends_on:
       - db
-      
+    environment:
+      - NODE_ENV=production
   frontend:
     build:
       context: ./frontend

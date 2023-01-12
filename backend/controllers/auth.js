@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken')
 
 const register = async (req, res) => { 
     try { 
-        const {email} = req.body;
+        const {name,email, password} = req.body;
         const oldUser = await User.findOne({email})
         if (oldUser) { 
             console.log(oldUser)
@@ -12,15 +12,16 @@ const register = async (req, res) => {
         } else {
         // hashing is handled by a presave hook in mongoose
         const user = await User.create({...req.body});
-        const token = user.createJWT()
+        const token = await user.createJWT()
         console.log(user, token);
         res.status(200).json({
             user_id: user._id,
-             token: token
+            token: token
         })
     }
     } catch(error) { 
-        res.status(500).send(error)
+        console.log('error encountered')
+        res.status(200).send(error)
     }
 }
 

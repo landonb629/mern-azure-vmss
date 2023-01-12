@@ -1,0 +1,65 @@
+{ 
+    "builders": [{
+        "type": "azure-arm",
+
+        "client_id": "cd98b796-8cfc-4d69-b393-588ba7c5ade8",
+        "client_secret": "tzn8Q~4f0kqkZixKOZ~hQMSoSUP-qmeeEpFsKbxt",
+        "tenant_id": "0ff27296-360f-491c-80ba-c37842c04960",
+        "subscription_id": "f80dea2d-81bb-442f-a102-d86eb72cb7d6",
+        
+        "managed_image_resource_group_name": "express-js-vmss",
+        "managed_image_name": "test-image",
+
+        "os_type": "Linux",
+        "image_publisher": "Canonical",
+        "image_offer": "UbuntuServer",
+        "image_sku": "18.04-LTS",
+
+        "azure_tags": { 
+            "env": "dev",
+            "app": "express"
+        },
+
+        "location": "East US",
+        "vm_size": "Standard_B1s"
+    }],
+    "provisioners": [
+        {
+            "type": "file",
+            "source": "./backend",
+            "destination": "/tmp/"
+        },
+        {
+        "execute_command": "chmod +x {{ .Path }}; {{ .Vars }} {{ .Path }}",
+        "inline": [ 
+            "sudo apt-get update",
+            "sudo apt-get upgrade -y",
+            "sudo curl -s https://deb.nodesource.com/setup_16.x | sudo bash",
+            "sudo apt-get install nodejs -y",
+            "sudo apt-get install libssl1.0-dev nodejs-dev node-gyp npm -y",
+            "sudo apt-get install nginx -y"
+        ],
+        "inline_shebang": "/bin/sh -x",
+        "type": "shell"
+    },
+    {
+        "type": "file",
+        "source": "default",
+        "destination": "/tmp/"
+    },
+    {
+        "execute_command": "chmod +x {{ .Path }}; {{ .Vars }} {{ .Path }}",
+        "inline": [ 
+            "sudo mv /tmp/default /etc/nginx/sites-enabled/default",
+            "sudo service nginx restart",
+            "sudo mkdir -p /var/www/public/app",
+            "sudo cp -r /tmp/backend/* /var/www/public/app",
+            "cd /var/www/public/app && npm install && npm install -g pm2",
+            "cd /var/www/public/app &&  pm2 start app.js"
+        ],
+        "inline_shebang": "/bin/sh -x",
+        "type": "shell"
+    }
+]
+}
+
