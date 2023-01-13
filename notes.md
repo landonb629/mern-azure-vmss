@@ -13,4 +13,8 @@
 # where the application is currently
 - users can register and be redirected to homepage
 - users can login with their existing credentials 
+
+# future additions 
+- give users the ability to add virtual networks 
+- protect those with tokens and adding authentication middleware
   

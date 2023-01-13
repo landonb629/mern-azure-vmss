@@ -20,3 +20,12 @@ variable "subnets" {
 variable "web-nsg" {
   default = "web-nsg"
 }
+variable "app-nsg" {
+  default = "app-nsg"
+}
+variable "db-nsg" {
+  default = "db-nsg"
+}
+variable "asg-name" {
+  default = "api-asg"
+}
