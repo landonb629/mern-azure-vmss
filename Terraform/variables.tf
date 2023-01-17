@@ -29,3 +29,35 @@ variable "db-nsg" {
 variable "asg-name" {
   default = "api-asg"
 }
+
+variable "cosmos_db_account" {
+  default = "mern-app-demo"
+}
+
+variable "cosmos_db" {
+  default = "mern-app-db"
+}
+
+variable "frontend-ip" {
+  default = "frontend-lb-ip"
+}
+
+variable "api-lb" {
+  default = "api-lb"
+}
+
+variable "vmss-name" {
+  default = "api-vmss"
+}
+
+variable "vmss-sku" {
+  default = "Standard_B1s"
+}
+
+variable "instance_count" {
+  default = 2
+}
+
+variable "source_image_id" {
+  default = ""
+}

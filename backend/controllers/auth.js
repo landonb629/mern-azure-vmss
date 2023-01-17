@@ -49,7 +49,7 @@ const login = async (req, res) => {
     }
     const isPasswordCorrect = await user.comparePasswords(password);
     if (isPasswordCorrect) { 
-        const token = user.createJWT()
+        const token = await user.createJWT()
         res.status(200).send({
             user_id: user._id,
             token: token
