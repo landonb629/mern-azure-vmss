@@ -4,11 +4,13 @@
  - virtual machine scale set
 */
 
+
 resource "azurerm_public_ip" "frontend-lb" {
   name = var.frontend-ip
   resource_group_name = azurerm_resource_group.rg.name
   location = var.location
-  allocation_method = "Dynamic"
+  allocation_method = "Static"
+  sku = "Standard"
 
 
   depends_on = [
@@ -16,20 +18,19 @@ resource "azurerm_public_ip" "frontend-lb" {
   ]
 }
 
+
 resource "azurerm_lb" "api-lb" {
   name = var.api-lb
   location = var.location
   resource_group_name = azurerm_resource_group.rg.name
-  sku = "Standard"
 
   frontend_ip_configuration {
     name = var.frontend-ip
-    public_ip_address_id = azurerm_public_ip.frontend-lb.id
-    subnet_id = azurerm_subnet.subnets["web"].id 
-    
+    subnet_id = azurerm_subnet.subnets["web"].id
+
   }
   depends_on = [
-    azurerm_public_ip.frontend-lb
+    azurerm_virtual_network.vnet
   ]
 }
 
@@ -42,6 +43,7 @@ resource "azurerm_lb_rule" "backend-rule" {
   loadbalancer_id = azurerm_lb.api-lb.id
   name = "API-lb-rule"
   protocol = "Tcp"
+  probe_id = azurerm_lb_probe.lb-probe.id
   frontend_port = 3031
   backend_port = 3031
   frontend_ip_configuration_name = azurerm_lb.api-lb.frontend_ip_configuration[0].name
@@ -67,13 +69,10 @@ resource "azurerm_linux_virtual_machine_scale_set" "vmss" {
   admin_username = "azureadmin"
   admin_password = "TestingPassword123_"
   upgrade_mode = "Rolling"
+  health_probe_id = azurerm_lb_probe.lb-probe.id
+  disable_password_authentication = false
 
-  source_image_reference { 
-      publisher = "Canonical"
-      offer = "UbuntuServer"
-      sku = "16.04-LTS"
-      version = "latest"
-  }
+  source_image_id = "/subscriptions/f80dea2d-81bb-442f-a102-d86eb72cb7d6/resourceGroups/express-js-vmss/providers/Microsoft.Compute/images/test-image-1673592051"
 
   os_disk { 
       storage_account_type = "Standard_LRS"
