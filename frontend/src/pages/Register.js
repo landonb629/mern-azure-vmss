@@ -2,7 +2,7 @@ import { React } from 'react';
 import { useState, useEffect } from 'react';
 import axios from 'axios'
 import FormRow from '../components/formRow'
-import { Form, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const initialState = {
     name: '',
@@ -66,7 +66,7 @@ const Register = () => {
     // check user function 
     const checkUser = async (payload) => { 
         try { 
-            const {user_id, token} = payload;
+            const {user_id} = payload;
             setUser(user_id)
         } catch(error) { 
             console.log(error);
