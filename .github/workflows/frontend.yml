@@ -24,9 +24,12 @@ jobs:
         with:
           node-version: 16.x
     
-      
       - name: install dependencies
         run: npm install 
+        working-directory: frontend
+      
+      - name: ls 
+        run: ls -la
         working-directory: frontend
       
       - name: run a build 
