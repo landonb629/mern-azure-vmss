@@ -19,14 +19,11 @@ jobs:
       - name: checkout repository
         uses: actions/checkout@v3
 
-      
-      - name: install extras 
-        run: | 
-         sudo apt-get update 
-         sudo apt-get upgrade -y
-         sudo curl -s https://deb.nodesource.com/setup_16.x | sudo bash
-         sudo apt-get install nodejs -y
-         sudo apt-get install libssl1.0-dev nodejs-dev node-gyp npm -y
+      - name: use nodejs
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.x
+    
       
       - name: install dependencies
         run: npm install 
