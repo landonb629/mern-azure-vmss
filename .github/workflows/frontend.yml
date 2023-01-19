@@ -26,11 +26,11 @@ jobs:
     
       - name: install dependencies
         run:  npm install 
-        working-directory: /home/runner/work/mern-azure-vmss/mern-azure-vmss/fronted
+        working-directory: /home/runner/work/mern-azure-vmss/mern-azure-vmss/frontend
       
       - name: run a build 
         run:  npm run build
-        working-directory: /home/runner/work/mern-azure-vmss/mern-azure-vmss/fronted
+        working-directory: /home/runner/work/mern-azure-vmss/mern-azure-vmss/frontend
   
         
         
