@@ -13,9 +13,6 @@ jobs:
   build_job:
     if: github.event_name == 'push' && github.event_name != 'pull_request'
     runs-on: ubuntu-18.04
-    defaults:
-      run:
-        working-directory: ./frontend
     name: build application
     steps:
       - name: checkout repository
