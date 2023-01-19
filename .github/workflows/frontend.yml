@@ -26,15 +26,15 @@ jobs:
     
       - name: install dependencies
         run: npm install 
-        working-directory: frontend
+        working-directory: ./frontend
       
       - name: ls 
         run: ls -la
-        working-directory: frontend
+        working-directory: ./frontend
       
       - name: run a build 
         run: npm run build 
-        working-directory: frontend
+        working-directory: ./frontend
   
         
         
