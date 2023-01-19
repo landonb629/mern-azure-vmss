@@ -9,6 +9,7 @@ on:
     branches: 
       - main
 
+
 jobs:
   build_job:
     if: github.event_name == 'push' && github.event_name != 'pull_request'
@@ -17,14 +18,19 @@ jobs:
     steps:
       - name: checkout repository
         uses: actions/checkout@v3
-      
-      - name: show everything in the directory
-        run: ls -la
 
       - name: use nodejs
         uses: actions/setup-node@v3
         with:
           node-version: 19.x
+      
+      - name: install dependencies
+        run: npm install 
+        working-directory: frontend
+      
+      - name: run a build 
+        run: npm run build 
+        working-directory: frontend
   
         
         
