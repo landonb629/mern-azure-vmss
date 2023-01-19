@@ -15,9 +15,7 @@ jobs:
 
       - name: test
         run: |
-          cd ./frontend 
-          ls -la 
-          npm install 
+          sh ./script.sh
 
       - name: use nodejs
         uses: actions/setup-node@v3
