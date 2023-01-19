@@ -13,17 +13,18 @@ jobs:
       - name: checkout repository
         uses: actions/checkout@v3
 
-      - name: test
-        run: ls -la
-      
-      - name: test again
-        run: cd /home/runner/work/mern-azure-vmss/mern-azure-vmss/frontend && ls -la
-
       - name: use nodejs
         uses: actions/setup-node@v3
         with:
           node-version: 16.x
     
+      - name: install dependencies
+        run:  npm install 
+        working-directory: ./frontend
+      
+      - name: run a build 
+        run:  npm run build
+        working-directory: ./frontend
   
         
         
