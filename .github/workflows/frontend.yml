@@ -28,16 +28,10 @@ jobs:
           node-version: 16.x
     
       - name: install dependencies
-        run: npm install 
-        working-directory: frontend/
-      
-      - name: ls 
-        run: ls -la
-        working-directory: frontend/
+        run: cd frontend && npm install 
       
       - name: run a build 
-        run: npm run build 
-        working-directory: frontend/
+        run: cd frontend && npm run build
   
         
         
