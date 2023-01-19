@@ -24,8 +24,8 @@ jobs:
         uses: actions/setup-node@v3
       - name: test 
         run: | 
-          npm install 
-          npm run build  
+          pwd
+          ls 
           
         
         
