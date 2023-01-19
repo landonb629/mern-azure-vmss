@@ -25,6 +25,7 @@ jobs:
         with:
           node-version: 12.x
       - name: dockerfile check 
+        working-directory: ./frontend
         run: cat Dockerfile
         
         
