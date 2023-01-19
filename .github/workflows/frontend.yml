@@ -25,7 +25,9 @@ jobs:
       - name: install dependencies
         run: npm install 
       - name: build project
-        run: react-scripts build
+        run: |
+          ls -ls 
+          npm run 
           
         
         
