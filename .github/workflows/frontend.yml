@@ -22,12 +22,10 @@ jobs:
         uses: actions/checkout@v2
       - name: use nodejs
         uses: actions/setup-node@v3
-      - name: install dependencies
-        run: npm install 
-      - name: build project
-        run: |
-          ls -ls 
-          npm run 
+      - name: test 
+        run: | 
+          npm install 
+          npm run build  
           
         
         
