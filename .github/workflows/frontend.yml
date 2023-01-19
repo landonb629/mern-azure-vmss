@@ -15,7 +15,8 @@ jobs:
 
       - name: test
         run: |
-          cd frontend 
+          cd ./frontend 
+          ls -la 
           npm install 
 
       - name: use nodejs
