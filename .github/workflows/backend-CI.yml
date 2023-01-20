@@ -27,5 +27,6 @@ jobs:
 
       - name: packer build 
         run: |
-          export GITHUB_SHA=${{GITHUB_SHA}} 
-          packer build -var 'github-sha=$GITHUB_SHA'app-image.json
+          export "NAME=${GITHUB_SHA}" 
+          echo $NAME
+        #  packer build -var 'github-sha=$GITHUB_SHA'app-image.json
