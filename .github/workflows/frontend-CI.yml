@@ -4,9 +4,7 @@ on:
   push:
     branches:
       - "**"
-  pull_request:
-    branches:
-      - main
+      - "!main"
 
 
 jobs:
@@ -33,9 +31,9 @@ jobs:
       
       - name: echo
         run: 
-          echo $GITHUB.EVENT_NAME
-          echo $GITHUB.EVENT.ACTION
-          echo $GITHUB.EVENT.PULL_REQUEST.MERGED
+          echo "$GITHUB.EVENT_NAME"
+          echo "$GITHUB.EVENT.ACTION"
+          echo "$GITHUB.EVENT.PULL_REQUEST.MERGED"
 
   
   deploy:
