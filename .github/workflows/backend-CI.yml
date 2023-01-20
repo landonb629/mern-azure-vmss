@@ -26,5 +26,6 @@ jobs:
           creds: ${{secrets.AZURE_SP_CREDENTIALS}}
 
       - name: packer build 
-        run: | 
-          cd backend
+        run: |
+          export GITHUB_SHA=${{GITHUB_SHA}} 
+          packer build -var 'github-sha=$GITHUB_SHA'app-image.json
