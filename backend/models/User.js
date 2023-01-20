@@ -18,6 +18,7 @@ const User = new Schema({
     }
 }) 
 
+
 // Has access to the document, needs to use this. to access the specifics
 User.pre('save', async function(next) { 
     const salt = await bcrypt.genSalt(10);
