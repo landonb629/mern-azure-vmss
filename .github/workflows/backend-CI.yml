@@ -1,0 +1,20 @@
+name: backend CI pipeline 
+on:
+  push:
+    paths:
+      - "./backend/*"
+    branches:
+      - "**"
+
+jobs:
+  packer-build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: checkout repo
+        uses: actions/checkout@v3
+      
+      - name: setup packer
+        uses: hashicorp/setup-packer@main
+        with:
+          version: latest
