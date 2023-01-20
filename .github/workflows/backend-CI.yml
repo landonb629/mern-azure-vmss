@@ -16,3 +16,8 @@ jobs:
         uses: hashicorp/setup-packer@main
         with:
           version: latest
+      
+      - name: login to azure
+        uses: azure/login@v1
+        with:
+          creds: ${{secrets.AZURE_SP_CREDENTIALS}}
