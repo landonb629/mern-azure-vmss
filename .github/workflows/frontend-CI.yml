@@ -31,11 +31,6 @@ jobs:
       - name: run a build 
         run:  npm run build
       
-      - name: echo
-        run: 
-          echo "$GITHUB.EVENT_NAME"
-          echo "$GITHUB.EVENT.ACTION"
-          echo "$GITHUB.EVENT.PULL_REQUEST.MERGED"
 
 
 

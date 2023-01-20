@@ -16,6 +16,7 @@ services:
       - db
     environment:
       - NODE_ENV=production
+      
   frontend:
     build:
       context: ./frontend

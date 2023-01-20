@@ -1,7 +1,10 @@
 name: backend CI pipeline 
 on:
   push:
+    paths:
+      - "./backend/**"
     branches:
+      - "!main"
       - "**"
 
 jobs:
@@ -16,12 +19,9 @@ jobs:
         with:
           version: latest
       
-      - name: login to azure
-        uses: azure/login@v1
-        with:
-          creds: ${{secrets.AZURE_SP_CREDENTIALS}}
-
-      - name: packer build 
+      - name: running packer validate 
         run: |
-          export "NAME=${GITHUB_SHA}" 
-          packer build -var 'github-sha=$NAME' app-image.json
+          packer validate app-image.json
+      
+
+  
