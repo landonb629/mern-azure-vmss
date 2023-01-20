@@ -1,0 +1,16 @@
+name: deploy application
+on:
+  pull_request:
+    branches:
+      - main 
+    types:
+      - closed
+
+jobs:
+  deploy: 
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: test
+        run:
+          echo test
