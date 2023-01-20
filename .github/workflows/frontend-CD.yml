@@ -1,10 +1,13 @@
 name: deploy application
 on:
-  pull_request:
+  push:
     branches:
-      - main 
-    types:
-      - closed
+      - "**"
+#  pull_request:
+ #   branches:
+  #    - main 
+   # types:
+    #  - closed
 
 jobs:
   deploy:
@@ -20,3 +23,4 @@ jobs:
           app_location: "./frontend/"
           output_location: "./frontend/build"
           app_build_command: "npm run build"
+          action: "upload"
