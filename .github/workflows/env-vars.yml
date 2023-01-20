@@ -1,0 +1,14 @@
+name: outputting github environment variables 
+on:
+  push:
+    branches:
+      - "**"
+
+jobs:
+  output-all:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: outputting all variables 
+        run: | 
+          env
