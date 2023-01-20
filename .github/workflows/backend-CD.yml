@@ -32,11 +32,11 @@ jobs:
         run: |
           export "NAME=${GITHUB_SHA}" 
           GETID="$(az image list | jq -r '.[] | select(.name=="prod-api-98feb2ca54e73e9993a3bf3494fe62a3a0f5e7fc") | .id')"
-          imageid="prod-api-$GETID"
+          imageid="$GETID"
           echo $imageid
         #  packer build -var 'github-sha=$NAME' app-image.json
 
-    #  - name: trigger rolling deployment 
-    #    run: 
-     #     export "NAME=${GITHUB_SHA}"
-    #      az vmss update --name test-vm --resource-group express-js-vmss --set virtualMachineProfile.storageProfile.imageReference.id=
+      - name: trigger rolling deployment 
+        run: 
+          export "NAME=${GITHUB_SHA}"
+          az vmss update --name test-vm --resource-group express-js-vmss --set virtualMachineProfile.storageProfile.imageReference.id=$imageid
