@@ -30,10 +30,16 @@ jobs:
       
       - name: run a build 
         run:  npm run build
+      
+      - name: echo
+        run: 
+          echo $GITHUB.EVENT_NAME
+          echo $GITHUB.EVENT.ACTION
+          echo $GITHUB.EVENT.PULL_REQUEST.MERGED
 
   
   deploy:
-    if: github.event.action == 'closed' && github.event.pull_request.merged == true
+    if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: checkout repository
@@ -46,7 +52,7 @@ jobs:
           app_location: "./frontend/"
           output_location: "./frontend/build"
           app_build_command: "npm run build"
-          
+
   
         
         
