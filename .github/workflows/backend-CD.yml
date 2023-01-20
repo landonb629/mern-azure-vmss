@@ -1,17 +1,17 @@
 name: backend API continuous deployment 
 on:
   push:
- # pull_request:
-  #  paths:
-  #    - "./backend/**"
+  pull_request:
+    paths:
+      - "./backend/**"
     branches:
       - "**"
-  #  types:
-  #    - closed 
+    types:
+      - closed 
 
 jobs:
   deploy_api:
-   # if: github.event.pull_request.merged == true
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
 
     steps:
@@ -27,14 +27,14 @@ jobs:
         uses: azure/login@v1
         with:
           creds: ${{secrets.AZURE_SP_CREDENTIALS}}
-
+# will need to run packer build here but, these are the commands that will be needed to run in order to get the image ID 
       - name: packer build 
         run: |
           export "NAME=${GITHUB_SHA}" 
           GETID="$(az image list | jq -r '.[] | select(.name=="prod-api-98feb2ca54e73e9993a3bf3494fe62a3a0f5e7fc") | .id')"
           imageid="$GETID"
           echo $imageid
-          az vmss update --name test-vm --resource-group express-js-vmss --set virtualMachineProfile.storageProfile.imageReference.id=$imageid
+     #     az vmss update --name test-vm --resource-group express-js-vmss --set virtualMachineProfile.storageProfile.imageReference.id=$imageid
         #  packer build -var 'github-sha=$NAME' app-image.json
  
           

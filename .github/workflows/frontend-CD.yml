@@ -1,15 +1,12 @@
 name: deploy application
 on:
-  push:
+  pull_request:
     paths:
-      - "./frontend/*"
+      - "./frontend/**"
     branches:
-      - "**"
-#  pull_request:
- #   branches:
-  #    - main 
-   # types:
-    #  - closed
+      - main 
+    types:
+      - closed
 
 jobs:
   deploy:

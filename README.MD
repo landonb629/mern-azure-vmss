@@ -1,0 +1,6 @@
+- [x] application code
+- [x] application architecture
+- [x] terraform code
+- [x] frontend CI/CD
+- [] backend CI/CD
+- [] final test: start -> finish
