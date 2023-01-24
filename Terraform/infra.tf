@@ -72,7 +72,7 @@ resource "azurerm_linux_virtual_machine_scale_set" "vmss" {
   health_probe_id = azurerm_lb_probe.lb-probe.id
   disable_password_authentication = false
 
-  source_image_id = "/subscriptions/f80dea2d-81bb-442f-a102-d86eb72cb7d6/resourceGroups/express-js-vmss/providers/Microsoft.Compute/images/test-image-1673592051"
+  source_image_id = "/subscriptions/f80dea2d-81bb-442f-a102-d86eb72cb7d6/resourceGroups/express-js-vmss/providers/Microsoft.Compute/images/prod-api-starter-image"
 
   os_disk { 
       storage_account_type = "Standard_LRS"
@@ -100,5 +100,15 @@ resource "azurerm_linux_virtual_machine_scale_set" "vmss" {
   }
 
 }
+
+/*
+resource "azurerm_static_site" "static-web-app" {
+  name = "mern-frontend"
+  resource_group_name = azurerm_resource_group.rg.name
+  location = var.location
+}
+*/
+
+
 
 
