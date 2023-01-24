@@ -8,6 +8,9 @@
 
 going to handle secrets with environment variables instead of having to find a secret store
 
+NEED TO ADD 
+- add the client secret to have access to pull the list of VM images
+
 steps:
 1. az login 
 2. create an azure service principal 
