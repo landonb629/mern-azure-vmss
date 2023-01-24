@@ -2,7 +2,7 @@ name: backend CI pipeline
 on:
   push:
     paths:
-      - "./backend/**"
+      - "backend/**"
     branches:
       - "!main"
       - "**"
