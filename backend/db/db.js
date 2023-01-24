@@ -15,8 +15,9 @@ const dbConnection = () => {
         })
     } catch(error) { 
 
+        
     }
-    
+
 }
 
 module.exports = dbConnection
