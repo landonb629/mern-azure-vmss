@@ -2,7 +2,7 @@ name: deploy application
 on:
   pull_request:
     paths:
-      - "./frontend/**"
+      - "frontend/**"
     branches:
       - main 
     types:

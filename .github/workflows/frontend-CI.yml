@@ -3,7 +3,7 @@ name: azure static web app deployment
 on:
   push:
     paths:
-      - "./frontend/**"
+      - "frontend/**"
     branches:
       - "**"
       - "!main"
