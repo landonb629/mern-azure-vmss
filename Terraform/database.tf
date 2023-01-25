@@ -19,6 +19,14 @@ geo_location {
 enable_automatic_failover = false
 public_network_access_enabled = false
 
+is_virtual_network_filter_enabled = true
+
+virtual_network_rule {
+  id = azurerm_subnet.subnets["app"].id
+  ignore_missing_vnet_service_endpoint = true
+}
+
+
 depends_on = [
   azurerm_virtual_network.vnet
 ]
@@ -35,7 +43,7 @@ resource "azurerm_cosmosdb_mongo_database" "login-db" {
     azurerm_virtual_network.vnet
   ]
 }
-
+/*
 resource "azurerm_private_endpoint" "db-access" {
   name  = "mern-app-db"
   location = var.location
@@ -55,3 +63,5 @@ resource "azurerm_private_endpoint" "db-access" {
     azurerm_cosmosdb_account.db-account
   ]
   }
+  
+*/
