@@ -14,6 +14,7 @@ env:
   AZURE_CLIENT_SECRET: ${{secrets.AZURE_CLIENT_SECRET}}
   AZURE_TENANT_ID: ${{secrets.AZURE_TENANT_ID}}
   AZURE_SUB_ID: ${{secrets.AZURE_SUB_ID}}
+  PR_NUMBER: ${{github.event.number}}
 
 jobs:
   deploy_api:
@@ -43,8 +44,8 @@ jobs:
 
       - name: trigger rolling deployment
         run: |
-           NAME="prod-api-${GITHUB_SHA}"
-           GETID="$(az image list | jq -r '.[] | select(.name==env.NAME) | .id')"
+           NAME="prod-api-${PR_NUMBER}"
+           GETID="$(az image list | jq -r '.[] | select(.name=='\"$NAME\"') | .id')"
            imageid="$GETID"
            echo $imageid
            az vmss update --name api-vmss --resource-group mern-app --set virtualMachineProfile.storageProfile.imageReference.id=$imageid
