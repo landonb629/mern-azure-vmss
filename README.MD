@@ -107,8 +107,10 @@ az storage container create --name $containerName --account-name $storageAccount
 
 7. get the static web app token for frontend
 
-## NEED TO ADD A PRIVATE ENDPOINT
+## NEED TO ADD A PRIVATE ENDPOINT FOR STATIC WEB APP 
+## ADD A RULE TO ALLOW PORT 80
 ## MAKE SURE THAT SELECTED NETWORKS IS ENABLED FOR COSMOSDB
+
 
 
 

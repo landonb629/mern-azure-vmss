@@ -13,6 +13,7 @@ const dbConnection = () => {
             useUnifiedTopology: true,
             retryWrites: false
         })
+        
     } catch(error) { 
 
     }
