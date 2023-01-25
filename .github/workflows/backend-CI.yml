@@ -28,14 +28,6 @@ jobs:
         with:
           creds: ${{secrets.AZURE_SP_CREDENTIALS}}
     
-      - name: trigger rolling deployment
-        run: |
-          export NAME="prod-api-${GITHUB_SHA}"
-          echo $NAME
-          GETID="$(az image list | jq -r '.[] | select(.name=="$NAME") | .id')"
-          imageid="$GETID"
-          echo $imageid
-        #  az vmss update --name api-vmss --resource-group mern-app --set virtualMachineProfile.storageProfile.imageReference.id=$imageid
       
 
   
