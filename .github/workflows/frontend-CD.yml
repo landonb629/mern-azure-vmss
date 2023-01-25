@@ -22,7 +22,8 @@ jobs:
       
       - name: getting deployment token
         run: |
-          TOKEN=$(az staticwebapp secrets list --name ${{secrets.AZURE_STATIC_WEBAPP_NAME}}  | jq -r .properties.apiKey)
+          NAME=${{secrets.AZURE_STATIC_WEBAPP_NAME}}
+          TOKEN=$(az staticwebapp secrets list --name $NAME  | jq -r .properties.apiKey)
           echo $TOKEN
 
       - name: deploy application 
