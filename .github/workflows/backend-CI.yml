@@ -22,6 +22,11 @@ jobs:
       - name: running packer validate 
         run: |
           packer validate app-image.json
+      
+      - name: login to azure
+        uses: azure/login@v1
+        with:
+          creds: ${{secrets.AZURE_SP_CREDENTIALS}}
     
       - name: trigger rolling deployment
         run: |
