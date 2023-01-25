@@ -9,10 +9,17 @@ on:
     types:
       - closed 
 
+env:
+  AZURE_CLIENT_ID: ${{secrets.AZURE_CLIENT_ID}}
+  AZURE_CLIENT_SECRET: ${{secrets.AZURE_CLIENT_SECRET}}
+  AZURE_TENANT_ID: ${{secrets.AZURE_TENANT_ID}}
+  AZURE_SUB_ID: ${{secrets.AZURE_SUB_ID}}
+  
 jobs:
   deploy_api:
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
+
 
     steps:
       - name: checkout repo
