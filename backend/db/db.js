@@ -12,8 +12,9 @@ const dbConnection = () => {
             useNewUrlParser: true,
             useUnifiedTopology: true,
             retryWrites: false
+            
         })
-        
+
     } catch(error) { 
 
     }
