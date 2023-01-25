@@ -24,10 +24,11 @@ resource "azurerm_lb" "api-lb" {
   name = var.api-lb
   location = var.location
   resource_group_name = azurerm_resource_group.rg.name
+  sku = "Standard"
 
   frontend_ip_configuration {
     name = var.frontend-ip
-    subnet_id = azurerm_subnet.subnets["web"].id
+    public_ip_address_id = azurerm_public_ip.frontend-lb.id
 
   }
   depends_on = [
@@ -103,6 +104,11 @@ resource "azurerm_linux_virtual_machine_scale_set" "vmss" {
       }
   
   }
+  depends_on = [
+    azurerm_lb.api-lb,
+    azurerm_lb_probe.lb-probe,
+    azurerm_virtual_network.vnet
+  ]
 
 }
 
