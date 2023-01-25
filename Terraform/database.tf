@@ -17,7 +17,7 @@ geo_location {
 }
 
 enable_automatic_failover = false
-public_network_access_enabled = false
+public_network_access_enabled = true
 
 is_virtual_network_filter_enabled = true
 

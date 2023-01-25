@@ -105,10 +105,20 @@ az storage container create --name $containerName --account-name $storageAccount
 ``` terraform apply -auto-approve ```
 
 
-7. get the static web app token for frontend
+7. set all the required secrets for github actions repository 
 
-## NEED TO ADD A PRIVATE ENDPOINT FOR STATIC WEB APP 
-## ADD A RULE TO ALLOW PORT 80
+    - AZURE_CLIENT_ID
+    - AZURE_CLIENT_SECRET
+    - AZURE_SP_CREDENTIALS
+    - AZURE_STATIC_WEBAPP_NAME
+    - AZURE_SUB_ID
+    - AZURE_TENANT_ID
+
+
+
+
+
+## NEED TO DO AN NSLOOKUP ON THE AZURE WEB APP AND THEN JUST ALLOW THOSE THROUGH THE FIREWALLS
 ## MAKE SURE THAT SELECTED NETWORKS IS ENABLED FOR COSMOSDB
 
 

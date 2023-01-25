@@ -14,7 +14,7 @@ env:
   AZURE_CLIENT_SECRET: ${{secrets.AZURE_CLIENT_SECRET}}
   AZURE_TENANT_ID: ${{secrets.AZURE_TENANT_ID}}
   AZURE_SUB_ID: ${{secrets.AZURE_SUB_ID}}
-  
+
 jobs:
   deploy_api:
     if: github.event.pull_request.merged == true
@@ -43,10 +43,10 @@ jobs:
 
       - name: trigger rolling deployment
         run: |
-          export NAME="prod-api-${GITHUB_SHA}"
-          GETID="$(az image list | jq -r '.[] | select(.name=="$NAME") | .id')"
-          imageid="$GETID"
-          echo $imageid
-          az vmss update --name api-vmss --resource-group mern-app --set virtualMachineProfile.storageProfile.imageReference.id=$imageid
+           NAME="prod-api-${GITHUB_SHA}"
+           GETID="$(az image list | jq -r '.[] | select(.name==env.NAME) | .id')"
+           imageid="$GETID"
+           echo $imageid
+           az vmss update --name api-vmss --resource-group mern-app --set virtualMachineProfile.storageProfile.imageReference.id=$imageid
  
           
