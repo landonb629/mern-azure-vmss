@@ -6,10 +6,10 @@ on:
     branches:
       - "**"
       - "!main"
-      
 
 env:
-  IMAGE-NAME: "test"
+  PR: "21"
+  TEST: "{{github.event.number}}"
 
 jobs:
   packer-build:
@@ -22,6 +22,7 @@ jobs:
         uses: hashicorp/setup-packer@main
         with:
           version: latest
+    
       
       - name: running packer validate 
         run: |
