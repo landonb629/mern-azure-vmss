@@ -61,7 +61,6 @@ const login = async (req, res) => {
        //  user: user._id,
          //token: token
      // }
-
     } catch(error) { 
         console.log(error)
     } 

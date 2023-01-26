@@ -9,6 +9,7 @@ on:
 
 env:
   IMAGE-NAME: "21"
+  TEST: "{{github.event.number}}"
 
 jobs:
   packer-build:
