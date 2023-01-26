@@ -4,8 +4,9 @@ on:
     paths:
       - "backend/**"
     branches:
-      - "!main"
       - "**"
+      - "!main"
+      
 
 env:
   IMAGE-NAME: "test"
