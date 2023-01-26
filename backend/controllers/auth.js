@@ -19,7 +19,7 @@ const register = async (req, res) => {
             token: token
         })
     }
-    
+
     } catch(error) { 
         console.log('error encountered')
         res.status(200).send(error)
@@ -67,7 +67,6 @@ const login = async (req, res) => {
         console.log(error)
     } 
 }
-
 
 
 module.exports = { 

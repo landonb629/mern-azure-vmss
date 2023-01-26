@@ -31,9 +31,10 @@ jobs:
         run: |
            NAME="prod-api-${IMAGE-NAME}"
            GETID="$(az image list | jq -r '.[] | select(.name=='\"$NAME\"') | .id')"
-           IMAGEID=$GETID
-           echo $IMAGEID
-           az vmss update --name api-vmss --resource-group mern-app --set virtualMachineProfile.storageProfile.imageReference.id=$IMAGEID
+           echo $GETID
+         # IMAGEID=$GETID
+         #  echo $IMAGEID
+          # az vmss update --name api-vmss --resource-group mern-app --set virtualMachineProfile.storageProfile.imageReference.id=$IMAGEID
       
    #   - name: running packer validate 
      #   run: |
