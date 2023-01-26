@@ -30,7 +30,7 @@ jobs:
 
       - name: trigger rolling deployment
         run: |
-           NAME="prod-api-${IMAGE-NAME}"
+           NAME="prod-api-$IMAGE-NAME"
            echo $NAME
           # GETID="$(az image list | jq -r '.[] | select(.name=='\"$NAME\"') | .id')"
          #  echo $GETID
