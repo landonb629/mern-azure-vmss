@@ -114,7 +114,7 @@ az storage container create --name $containerName --account-name $storageAccount
     - AZURE_SUB_ID
     - AZURE_TENANT_ID
 
-
+az staticwebapp secrets list --name mern-frontend  | jq -r .properties.apiKey
 
 
 
