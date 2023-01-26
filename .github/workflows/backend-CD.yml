@@ -13,7 +13,7 @@ env:
   AZURE_CLIENT_SECRET: ${{secrets.AZURE_CLIENT_SECRET}}
   AZURE_TENANT_ID: ${{secrets.AZURE_TENANT_ID}}
   AZURE_SUB_ID: ${{secrets.AZURE_SUB_ID}}
-  IMAGE_NAME: ${{github.event.number}}
+  IMAGE-NAME: ${{github.event.number}}
 
 jobs:
   deploy_api:
