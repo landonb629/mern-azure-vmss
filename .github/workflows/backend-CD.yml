@@ -1,6 +1,5 @@
-name: backend API continuous deployment 
+name: backend CD
 on:
-  push:
   pull_request:
     paths:
       - "backend/**"
@@ -18,7 +17,6 @@ env:
 
 jobs:
   deploy_api:
-    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
 
 
@@ -38,16 +36,16 @@ jobs:
       
       - name: running packer build 
         run: |
-          NAME=${PR_NUMBER}
-          packer build -var 'github-sha=$NAME' app-image.json
+          IMAGE-NAME=${PR_NUMBER}
+          packer build app-image.json
 # will need to run packer build here but, these are the commands that will be needed to run in order to get the image ID 
 
       - name: trigger rolling deployment
         run: |
            NAME="prod-api-${PR_NUMBER}"
            GETID="$(az image list | jq -r '.[] | select(.name=='\"$NAME\"') | .id')"
-           imageid="$GETID"
-           echo $imageid
-           az vmss update --name api-vmss --resource-group mern-app --set virtualMachineProfile.storageProfile.imageReference.id=$imageid
+           IMAGEID=$GETID
+           echo $IMAGEID
+           az vmss update --name api-vmss --resource-group mern-app --set virtualMachineProfile.storageProfile.imageReference.id=$IMAGEID
  
           

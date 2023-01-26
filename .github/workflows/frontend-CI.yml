@@ -1,4 +1,4 @@
-name: azure static web app deployment 
+name: frontend CI
 
 on:
   push:

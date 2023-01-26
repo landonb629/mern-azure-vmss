@@ -1,6 +1,6 @@
 { 
     "variables": {
-        "sha": "{{env `GITHUB_SHA`}}",
+        "image": "{{env `IMAGE-NAME`}}",
         "client_id": "{{env `AZURE_CLIENT_ID`}}",
         "client_secret": "{{env `AZURE_CLIENT_SECRET`}}",
         "tenant_id": "{{env `AZURE_TENANT_ID`}}",
@@ -15,7 +15,7 @@
         "subscription_id": "{{user `sub_id`}}",
         
         "managed_image_resource_group_name": "express-js-vmss",
-        "managed_image_name": "prod-api-{{user `sha`}}",
+        "managed_image_name": "prod-api-{{user `image`}}",
 
         "os_type": "Linux",
         "image_publisher": "Canonical",
