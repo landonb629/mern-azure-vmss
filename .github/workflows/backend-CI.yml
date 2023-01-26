@@ -7,10 +7,6 @@ on:
       - "**"
       - "!main"
 
-env:
-  PR: "21"
-  TEST: "{{github.event.number}}"
-
 jobs:
   packer-build:
     runs-on: ubuntu-latest
