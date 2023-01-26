@@ -23,6 +23,7 @@ const register = async (req, res) => {
         console.log('error encountered')
         res.status(200).send(error)
     }
+    
 }
 
 const getUser = async (req, res) => { 
