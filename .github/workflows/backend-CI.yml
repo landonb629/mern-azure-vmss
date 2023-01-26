@@ -29,9 +29,10 @@ jobs:
 
       - name: trigger rolling deployment
         run: |
-           NAME="prod-api-21"
-           GETID="$(az image list | jq -r '.[] | select(.name=='\"$NAME\"') | .id')"
-           echo $GETID
+           NAME="prod-api-${IMAGE-NAME}"
+           echo $NAME
+          # GETID="$(az image list | jq -r '.[] | select(.name=='\"$NAME\"') | .id')"
+         #  echo $GETID
          # IMAGEID=$GETID
          #  echo $IMAGEID
           # az vmss update --name api-vmss --resource-group mern-app --set virtualMachineProfile.storageProfile.imageReference.id=$IMAGEID
