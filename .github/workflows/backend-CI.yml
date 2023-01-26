@@ -18,28 +18,15 @@ jobs:
       - name: checkout repo
         uses: actions/checkout@v3
       
-  #    - name: setup packer
-    #    uses: hashicorp/setup-packer@main
-     #   with:
-      #    version: latest
-      
-      - name: login to azure
-        uses: azure/login@v1
+      - name: setup packer
+        uses: hashicorp/setup-packer@main
         with:
-          creds: ${{secrets.AZURE_SP_CREDENTIALS}}
-
-      - name: trigger rolling deployment
-        run: |
-           NAME="prod-api-${PR}"
-           GETID="$(az image list | jq -r '.[] | select(.name=='\"$NAME\"') | .id')"
-           echo $GETID
-         # IMAGEID=$GETID
-         #  echo $IMAGEID
-          # az vmss update --name api-vmss --resource-group mern-app --set virtualMachineProfile.storageProfile.imageReference.id=$IMAGEID
+          version: latest
+    
       
-   #   - name: running packer validate 
-     #   run: |
-      #    packer validate app-image.json
+      - name: running packer validate 
+        run: |
+          packer validate app-image.json
       
       
     
