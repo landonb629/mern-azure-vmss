@@ -13,7 +13,7 @@ env:
   AZURE_CLIENT_SECRET: ${{secrets.AZURE_CLIENT_SECRET}}
   AZURE_TENANT_ID: ${{secrets.AZURE_TENANT_ID}}
   AZURE_SUB_ID: ${{secrets.AZURE_SUB_ID}}
-  IMAGE-NAME: ${{github.event.number}}
+  PR: ${{github.event.number}}
 
 jobs:
   deploy_api:
@@ -41,7 +41,7 @@ jobs:
 
       - name: trigger rolling deployment
         run: |
-           NAME="prod-api-${IMAGE-NAME}"
+           NAME="prod-api-${PR}"
            GETID="$(az image list | jq -r '.[] | select(.name=='\"$NAME\"') | .id')"
            IMAGEID=$GETID
            echo $IMAGEID
