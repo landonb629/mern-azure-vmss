@@ -6,10 +6,9 @@ on:
     branches:
       - "**"
       - "!main"
-      
 
 env:
-  IMAGE-NAME: "test"
+  IMAGE-NAME: "21"
 
 jobs:
   packer-build:
@@ -23,9 +22,22 @@ jobs:
         with:
           version: latest
       
-      - name: running packer validate 
+      - name: login to azure
+        uses: azure/login@v1
+        with:
+          creds: ${{secrets.AZURE_SP_CREDENTIALS}}
+
+      - name: trigger rolling deployment
         run: |
-          packer validate app-image.json
+           NAME="prod-api-${IMAGE-NAME}"
+           GETID="$(az image list | jq -r '.[] | select(.name=='\"$NAME\"') | .id')"
+           IMAGEID=$GETID
+           echo $IMAGEID
+           az vmss update --name api-vmss --resource-group mern-app --set virtualMachineProfile.storageProfile.imageReference.id=$IMAGEID
+      
+   #   - name: running packer validate 
+     #   run: |
+      #    packer validate app-image.json
       
       
     
