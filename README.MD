@@ -117,9 +117,8 @@ az storage container create --name $containerName --account-name $storageAccount
 az staticwebapp secrets list --name mern-frontend  | jq -r .properties.apiKey
 
 
+# GOING TO SWAP OUT STATIC WEB APPLICATIONS FOR AZURE CONTAINER INSTANCES
 
-## NEED TO DO AN NSLOOKUP ON THE AZURE WEB APP AND THEN JUST ALLOW THOSE THROUGH THE FIREWALLS
-## MAKE SURE THAT SELECTED NETWORKS IS ENABLED FOR COSMOSDB
 
 
 
