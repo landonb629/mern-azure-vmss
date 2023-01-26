@@ -36,7 +36,7 @@ jobs:
       
       - name: running packer build 
         run: |
-          IMAGE-NAME=${PR_NUMBER}
+          IMAGE-NAME="${PR_NUMBER}""
           packer build app-image.json
 # will need to run packer build here but, these are the commands that will be needed to run in order to get the image ID 
 
