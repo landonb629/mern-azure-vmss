@@ -8,7 +8,7 @@ on:
       - "!main"
 
 env:
-  IMAGE-NAME: "21"
+  PR: "21"
   TEST: "{{github.event.number}}"
 
 jobs:
@@ -30,8 +30,9 @@ jobs:
 
       - name: trigger rolling deployment
         run: |
-           NAME="prod-api-$IMAGE-NAME"
+           NAME="prod-api-${PR}"
            echo $NAME
+           echo $TEST
           # GETID="$(az image list | jq -r '.[] | select(.name=='\"$NAME\"') | .id')"
          #  echo $GETID
          # IMAGEID=$GETID

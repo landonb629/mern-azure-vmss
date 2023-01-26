@@ -37,6 +37,7 @@ const getUser = async (req, res) => {
 
 const login = async (req, res) => { 
     try { 
+        
     // what do we want to accomplish with a login?
     // user submits username and password => lookup the email and compare the password => send back a token 
     const { email, password } = req.body;
@@ -61,7 +62,7 @@ const login = async (req, res) => {
        //  user: user._id,
          //token: token
      // }
-     
+
     } catch(error) { 
         console.log(error)
     } 
