@@ -21,6 +21,7 @@ jobs:
       
       - name: running packer validate 
         run: |
+          IMAGE-NAME=testing
           packer validate app-image.json
       
       
