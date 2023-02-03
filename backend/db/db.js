@@ -7,7 +7,7 @@ const dbConnection = () => {
         return mongoose.connect("mongodb://mern-app-demo.mongo.cosmos.azure.com:10255/users?ssl=true&replicaSet=globaldb",{
             auth: { 
                 username: "mern-app-demo",
-                password: "rGLxwttBiBTUvCosaMuKEz29c2hEi3ASwAdodVDBDmnX9jxJu3L1kHSFWPo6ysAWI0OBZ7aDNbFQACDbQhVtRQ=="
+                password: "BtxVW4ch5JXlwUWOUYO1KGXplrG4lQYm86MqR3xL9RknIxtkZ1H2hWwIWooVAJlyxWkeDXyWxlaNACDbr0uweg=="
             },
             useNewUrlParser: true,
             useUnifiedTopology: true,

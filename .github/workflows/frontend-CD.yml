@@ -8,9 +8,13 @@ on:
     types:
       - closed
 
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./frontend
     steps:
       - name: checkout repository
         uses: actions/checkout@v3
@@ -19,18 +23,26 @@ jobs:
         uses: azure/login@v1
         with:
           creds: ${{secrets.AZURE_SP_CREDENTIALS}}
-      
-   #   - name: getting deployment token
-    #    run: |
-     #     NAME=${{secrets.AZURE_STATIC_WEBAPP_NAME}}
-      #    TOKEN=$(az staticwebapp secrets list --name $NAME  | jq -r .properties.apiKey)
-      #    echo $TOKEN
-
-      - name: deploy application 
-        uses: Azure/static-web-apps-deploy@v1
+    
+      - name: login to ACR 
+        uses: azure/docker-login@v1
         with:
-          azure_static_web_apps_api_token: ${{secrets.AZURE_STATIC_WEB_APP_TOKEN}}
-          app_location: "./frontend/"
-          output_location: "build"
-          app_build_command: "npm run build"
-          action: "upload"
+          login-server: mernvmss.azurecr.io 
+          username: ${{secrets.ACR_USERNAME}}
+          password: ${{secrets.ACR_PASSWORD}}
+    
+      - name: building the docker image 
+        run: | 
+          docker build -f Dockerfile.prod -t mernvmss.azurecr.io/mern-frontend:${{github.sha}}
+          docker push mernvmss.azurecr.io/mern-frontend:${{github.sha}}
+      
+      - name: roll out new version of frontend
+        uses: azure/aci-deploy@v1
+        with:
+          resource-group: mern-app
+          image: mernvmss.azurecr.io/mern-frontend:${{github.sha}}
+          registry-login-server: mernvmss.azurecr.io
+          registry-username: ${{secrets.ACR_USERNAME}}
+          registry-password: ${{secrets.ACR_PASSWORD}}
+          name: mern-frontend1
+          location: 'eastus'
