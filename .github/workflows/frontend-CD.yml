@@ -40,6 +40,7 @@ jobs:
         uses: azure/aci-deploy@v1
         with:
           resource-group: mern-app
+          dns-name-label: mern-frontend-app
           image: mernvmss.azurecr.io/mern-frontend:${{github.sha}}
           registry-login-server: mernvmss.azurecr.io
           registry-username: ${{secrets.ACR_USERNAME}}
