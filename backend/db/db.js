@@ -15,6 +15,7 @@ const dbConnection = () => {
         })
 
     } catch(error) { 
+        console.log(error)
     }
 }
 

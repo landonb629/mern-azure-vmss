@@ -7,6 +7,9 @@ on:
       - "**"
       - "!main"
 
+env:
+  PR: "dev"
+
 jobs:
   packer-build:
     runs-on: ubuntu-latest
