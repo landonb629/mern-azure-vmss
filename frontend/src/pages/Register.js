@@ -35,7 +35,7 @@ const Register = () => {
     //request function 
     const registerUser = async(data) => { 
         try { 
-            const response = await axios.post('http://20.172.190.93:3031/api/v1/auth/register', data)
+            const response = await axios.post('http://20.85.226.218:3031/api/v1/auth/register', data)
             const returnData = await response;
             const {user_id, token } = returnData.data; // the data attribute is what holds the information sent back from the server 
             const payload = { 
@@ -50,7 +50,7 @@ const Register = () => {
 
     const loginUser = async(data) => { 
         try {
-            const response = await axios.post('http://20.172.190.93:3031/api/v1/auth/login/', data)
+            const response = await axios.post('http://20.85.226.218:3031/api/v1/auth/login/', data)
             const returnData = await response;
             const {user_id, token } = returnData.data;
             const payload = { 

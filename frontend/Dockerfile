@@ -1,4 +1,4 @@
-FROM node:17-alpine as Builder
+FROM --platform=linux/amd64 node:17-alpine as Builder
 
 WORKDIR /usr/src/frontend 
 

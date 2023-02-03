@@ -77,7 +77,7 @@ resource "azurerm_linux_virtual_machine_scale_set" "vmss" {
   health_probe_id = azurerm_lb_probe.lb-probe.id
   disable_password_authentication = false
 
-  source_image_id = "/subscriptions/f80dea2d-81bb-442f-a102-d86eb72cb7d6/resourceGroups/express-js-vmss/providers/Microsoft.Compute/images/prod-api-starter-image"
+  source_image_id = "/subscriptions/f80dea2d-81bb-442f-a102-d86eb72cb7d6/resourceGroups/express-js-vmss/providers/Microsoft.Compute/images/prod-api-23"
 
   os_disk { 
       storage_account_type = "Standard_LRS"
@@ -112,12 +112,30 @@ resource "azurerm_linux_virtual_machine_scale_set" "vmss" {
 
 }
 
-resource "azurerm_static_site" "static-web-app" {
-  name = "mern-frontend"
+resource "azurerm_container_group" "frontend-container" {
+  name = var.container_name 
+  location = var.location
   resource_group_name = azurerm_resource_group.rg.name
-  location = "eastus2"
+  ip_address_type = var.container_ip_type
+  os_type = var.container_os_type 
+  
+  image_registry_credential {
+    server = "mernvmss.azurecr.io"
+    username = "mernvmss"
+    password = "R+5eu93YHmB0zrK40klBUSbvK9Ol8Ejid/GmF0O7iS+ACRDreDan"
+  }
+
+  container { 
+    name = var.container_name 
+    image = var.container_image
+    cpu = "1.0"
+    memory = "1.5"
+
+    ports { 
+      port = 3000
+      protocol = "TCP"
+    }
+  }
 }
-
-
 
 

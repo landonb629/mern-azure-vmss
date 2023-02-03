@@ -8,16 +8,28 @@
 
 going to handle secrets with environment variables instead of having to find a secret store
 
+high level steps for this project
+- there are few resources that we will be spinning up manually 
+    - azure container registry 
+    - building the initial frontend container
+    - building the starter VMSS custom image 
+
+- we will need to gather some environment variables for github actions to be able to authenticate 
+
 NEED TO ADD 
 - add the client secret to have access to pull the list of VM images
 
 steps:
 1. az login 
 2. create an azure service principal 
-3. packer build the starter image
-4. deploy the baseline terraform 
-5. change the environment variables for the application in github actions or going to have to hardcode the values for now 
-6. change the frontend URL in the code (I know this sucks, this wasn't supposed to be highlighting that I am an expert developer)
+3. create container registry in azure 
+4. take note of the server name, username, and password
+5. packer build the starter image
+6. deploy the baseline terraform 
+7. update the URLs in the frontend code (Register.js)
+8. update the backend code with the correct DB url
+8. change the frontend URL in the code (I know this sucks, this wasn't supposed to be highlighting that I am an expert developer)
+
 
 
 # Project Description / Motivations
@@ -110,16 +122,11 @@ az storage container create --name $containerName --account-name $storageAccount
     - AZURE_CLIENT_ID
     - AZURE_CLIENT_SECRET
     - AZURE_SP_CREDENTIALS
-    - AZURE_STATIC_WEBAPP_NAME
     - AZURE_SUB_ID
     - AZURE_TENANT_ID
 
-az staticwebapp secrets list --name mern-frontend  | jq -r .properties.apiKey
+# GOING TO SWAP OUT STATIC WEB APPLICATIONS FOR AZURE CONTAINER INSTANCES
 
-
-
-## NEED TO DO AN NSLOOKUP ON THE AZURE WEB APP AND THEN JUST ALLOW THOSE THROUGH THE FIREWALLS
-## MAKE SURE THAT SELECTED NETWORKS IS ENABLED FOR COSMOSDB
 
 
 
