@@ -47,3 +47,4 @@ jobs:
           registry-password: ${{secrets.ACR_PASSWORD}}
           name: mern-frontend1
           location: 'eastus'
+          ports: 3000

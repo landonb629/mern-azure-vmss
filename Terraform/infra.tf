@@ -86,7 +86,7 @@ resource "azurerm_linux_virtual_machine_scale_set" "vmss" {
 
    rolling_upgrade_policy {
        max_batch_instance_percent = 20
-       max_unhealthy_instance_percent = 20
+       max_unhealthy_instance_percent = 100
        max_unhealthy_upgraded_instance_percent = 20
        pause_time_between_batches = "PT15S"
    }
@@ -135,6 +135,11 @@ resource "azurerm_container_group" "frontend-container" {
       port = 3000
       protocol = "TCP"
     }
+  }
+  lifecycle {
+    ignore_changes = [
+      container
+    ]
   }
 }
 
