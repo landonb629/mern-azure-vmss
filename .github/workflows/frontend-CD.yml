@@ -33,7 +33,7 @@ jobs:
     
       - name: building the docker image 
         run: | 
-          docker build -f Dockerfile.prod -t mernvmss.azurecr.io/mern-frontend:${{github.sha}}
+          docker build -f Dockerfile.prod -t mernvmss.azurecr.io/mern-frontend:${{github.sha}} .
           docker push mernvmss.azurecr.io/mern-frontend:${{github.sha}}
       
       - name: roll out new version of frontend
