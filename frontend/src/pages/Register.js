@@ -16,7 +16,7 @@ const Register = () => {
     const [request, setRequest] = useState(initialState);
     const [user, setUser] = useState('')
 
-    
+
     // register a user and update the state value for user, to allow for redirect
     const onSubmit = async (e) => { 
         e.preventDefault()
@@ -72,7 +72,6 @@ const Register = () => {
         } catch(error) { 
             console.log(error);
         }
-        
     }
     // redirect is user is set
     useEffect(()=> { 
