@@ -1,15 +1,13 @@
-FROM --platform=linux/amd64 node:17-alpine as Builder
+FROM --platform=linux/x86_64 node:16-alpine 
 
-WORKDIR /usr/src/frontend 
+WORKDIR /usr/src/frontend
 
-COPY package.json . 
+COPY package-lock.json package.json /usr/src/frontend/ 
 
-COPY package-lock.json . 
+RUN npm install  
 
-RUN npm install 
+COPY . . 
 
 EXPOSE 3000
 
 ENTRYPOINT ["npm", "start"]
-
-

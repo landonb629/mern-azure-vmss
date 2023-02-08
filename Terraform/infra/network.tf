@@ -40,7 +40,6 @@ resource "azurerm_application_security_group" "asg" {
 }
 
 ## security  groups 
-
 resource "azurerm_network_security_group" "web" {
   name = var.web-nsg
   location = var.location
@@ -66,14 +65,14 @@ resource "azurerm_network_security_group" "app" {
   resource_group_name = azurerm_resource_group.rg.name
 
   security_rule { 
-    name = "allowFromLB"
+    name = "allowFromToAPI"
     priority = 100
     direction = "Inbound"
     access = "Allow"
     protocol = "Tcp"
     source_port_range = "*"
     destination_port_range = "3031"
-    source_address_prefix = "AzureLoadBalancer"
+    source_address_prefix = "*"
     destination_address_prefix = "*"
 
   }
