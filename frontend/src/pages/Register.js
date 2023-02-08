@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios'
 import FormRow from '../components/formRow'
 import { useNavigate } from 'react-router-dom';
+import configdata from "../config/config.json"
 
 const initialState = {
     name: '',
@@ -36,7 +37,7 @@ const Register = () => {
     //request function 
     const registerUser = async(data) => { 
         try { 
-            const response = await axios.post('http://20.25.56.222:3031/api/v1/auth/register', data)
+            const response = await axios.post(`${configdata.SERVER_URL}:3031/api/v1/auth/register`, data)
             const returnData = await response;
             const {user_id, token } = returnData.data; // the data attribute is what holds the information sent back from the server 
             const payload = { 
@@ -51,7 +52,7 @@ const Register = () => {
 
     const loginUser = async(data) => { 
         try {
-            const response = await axios.post('http://20.25.56.222:3031/api/v1/auth/login/', data)
+            const response = await axios.post(`${configdata.SERVER_URL}:3031/api/v1/auth/login/`, data)
             const returnData = await response;
             const {user_id, token } = returnData.data;
             const payload = { 

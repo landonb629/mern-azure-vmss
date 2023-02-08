@@ -8,22 +8,18 @@
 # ip configuration for load balancer
 resource "azurerm_public_ip" "frontend-lb" {
   name = var.frontend-ip
-  resource_group_name = azurerm_resource_group.rg.name
+  resource_group_name = var.rg_name
   location = var.location
   allocation_method = "Static"
   sku = "Standard"
 
-
-  depends_on = [
-    azurerm_virtual_network.vnet
-  ]
 }
 
 # azure load balancer
 resource "azurerm_lb" "api-lb" {
   name = var.api-lb
   location = var.location
-  resource_group_name = azurerm_resource_group.rg.name
+  resource_group_name = var.rg_name
   sku = "Standard"
 
   frontend_ip_configuration {
@@ -31,9 +27,7 @@ resource "azurerm_lb" "api-lb" {
     public_ip_address_id = azurerm_public_ip.frontend-lb.id
 
   }
-  depends_on = [
-    azurerm_virtual_network.vnet
-  ]
+
 }
 
 # backend address pool resource
@@ -67,7 +61,7 @@ resource "azurerm_lb_probe" "lb-probe" {
 
 resource "azurerm_linux_virtual_machine_scale_set" "vmss" {
   name = var.vmss-name
-  resource_group_name = azurerm_resource_group.rg.name
+  resource_group_name = var.rg_name
   location = var.location
   sku = var.vmss-sku    
   instances = var.instance_count
@@ -77,7 +71,7 @@ resource "azurerm_linux_virtual_machine_scale_set" "vmss" {
   health_probe_id = azurerm_lb_probe.lb-probe.id
   disable_password_authentication = false
 
-  source_image_id = "/subscriptions/f80dea2d-81bb-442f-a102-d86eb72cb7d6/resourceGroups/express-js-vmss/providers/Microsoft.Compute/images/prod-api-23"
+  source_image_id = var.image-id
 
   os_disk { 
       storage_account_type = "Standard_LRS"
@@ -87,7 +81,7 @@ resource "azurerm_linux_virtual_machine_scale_set" "vmss" {
    rolling_upgrade_policy {
        max_batch_instance_percent = 20
        max_unhealthy_instance_percent = 100
-       max_unhealthy_upgraded_instance_percent = 20
+       max_unhealthy_upgraded_instance_percent = 100
        pause_time_between_batches = "PT15S"
    }
   # network interface -> ip configuration = how to set the vmss machines to the LB backend pool
@@ -98,16 +92,15 @@ resource "azurerm_linux_virtual_machine_scale_set" "vmss" {
       ip_configuration { 
           name = "Internal"
           primary = true 
-          subnet_id = azurerm_subnet.subnets["app"].id 
+          subnet_id = data.azurerm_subnet.app.id 
           load_balancer_backend_address_pool_ids = [azurerm_lb_backend_address_pool.lb-backend-pool.id]
-          application_security_group_ids = [azurerm_application_security_group.asg.id]
+          application_security_group_ids = [data.azurerm_application_security_group.asg.id]
       }
   
   }
   depends_on = [
     azurerm_lb.api-lb,
     azurerm_lb_probe.lb-probe,
-    azurerm_virtual_network.vnet
   ]
 
 }
@@ -115,14 +108,14 @@ resource "azurerm_linux_virtual_machine_scale_set" "vmss" {
 resource "azurerm_container_group" "frontend-container" {
   name = var.container_name 
   location = var.location
-  resource_group_name = azurerm_resource_group.rg.name
+  resource_group_name = var.rg_name
   ip_address_type = var.container_ip_type
   os_type = var.container_os_type 
   
   image_registry_credential {
-    server = "mernvmss.azurecr.io"
-    username = "mernvmss"
-    password = "R+5eu93YHmB0zrK40klBUSbvK9Ol8Ejid/GmF0O7iS+ACRDreDan"
+    server = var.registry_server
+    username = var.registry_username
+    password = var.registry_password
   }
 
   container { 

@@ -1,3 +1,15 @@
+####################
+## input required ##
+####################
+
+variable "image-id" {
+  default = ""
+}
+
+###################
+###################
+###################
+
 variable "rg_name" {
   default = "mern-app"
 }
@@ -58,10 +70,6 @@ variable "instance_count" {
   default = 2
 }
 
-variable "source_image_id" {
-  default = ""
-}
-
 variable "container_name" {
   default = "mern-frontend1"
 }
@@ -70,10 +78,9 @@ variable "container_ip_type" {
   default  = "Public"
 }
 
-variable "container_image" {
-  default = "mernvmss.azurecr.io/mern-frontend:v2"
-}
+
 
 variable "container_os_type" {
   default = "Linux"
 }
+
