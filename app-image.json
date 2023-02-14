@@ -14,7 +14,7 @@
         "tenant_id": "{{user `tenant_id`}}",
         "subscription_id": "{{user `sub_id`}}",
         
-        "managed_image_resource_group_name": "express-js-vmss",
+        "managed_image_resource_group_name": "mern-app",
         "managed_image_name": "prod-api-{{user `image`}}",
 
         "os_type": "Linux",

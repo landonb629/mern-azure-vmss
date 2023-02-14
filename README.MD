@@ -84,37 +84,7 @@ Below is an example scenario that would trigger the pipelines
 
 1. az login 
 
-2. Create a storage account and container for your terraform backend (using az CLI)
-
-export your environment variables 
-
-```
-export storageAccountName=''
-export resourceGroupName=''
-export containerName=''
-export location=''
-
-```
-
-create the resource group
-
-```
-az group create --name $resourceGroupName --location $location 
-```
-
-create the storage account 
-
-```
-az storage account create --name $storageAccountName --resource-group $resourceGroupName --location eastus --sku Standard_LRS --kind StorageV2
-```
-
-create storage account container
-
-```
-az storage container create --name $containerName --account-name $storageAccountName --auth-mode login
-```
-
-3. deploy the terraform resources in the Terraform/infra directory
+2. deploy the terraform resources in the Terraform/infra directory
     - this deploys the underlying infrastructure (CosmosDB, Virtual Network, Security Groups)
 ``` 
 
@@ -125,7 +95,11 @@ terraform apply -auto-approve
 
 ```
 
-4. get the CosmosDB password, and URL from the azure console, add that password to backend/config/default.json
+3. get the CosmosDB password, with the command below, add that password to backend/config/default.json
+
+    ```
+    az cosmosdb keys list --name mern-app-demo --resource-group mern-app --type keys
+    ```
 
     example of what the file should look like
 
@@ -139,13 +113,19 @@ terraform apply -auto-approve
     }
     ```
 
-5. create an azure service principal 
+4. create an azure service principal, with the role of contributor at the subscription level
 
-    ``` 
-    az ad sp create-for-rbac --name $name --role $role --scope /subscriptions/{subID}
+    NOTE: you can get your subscription ID with the following command, copy the "id" 
+
+    ```
+    az account show 
     ```
 
-6. export the required environment variables for the packer template, to build the template locally (you can hardcode them if you want)
+    ``` 
+    az ad sp create-for-rbac --name $name --role $role --scope /subscriptions/{subID} --sdk-auth
+    ```
+
+5. export the required environment variables for the packer template, to build the template locally (you can hardcode them if you want)
 
 ```
  export AZURE_CLIENT_ID=" "
@@ -163,7 +143,35 @@ packer build app-image.json
 
 ** Copy the image ID output from the packer build
 
-7. build the frontend container locally 
+
+6. get the following information and add to the terraform variable file in Terraform/app
+
+    - packer image ID
+
+7. deploy the terraform code for the application
+
+``` 
+cd Terraform/app 
+terraform init 
+terraform plan 
+terraform apply -auto-approve 
+```
+
+
+8. once the application layer is deployed, get the frontend ip address of the load balancer, add the IP to frontend/src/config/config.json
+    ** NOTE: you can get the frontend ip address with this command 
+    ```
+     az network public-ip --resource-group mern-app -o table 
+    ```
+    - the file should look like this 
+
+    ```
+    { 
+    "SERVER_URL": "http://20.12.242.10"
+    }
+    ```
+
+9. build the frontend container locally 
 
 ``` 
 cd frontend 
@@ -173,25 +181,20 @@ cd frontend
 docker build -f Dockerfile.prod -t mernvmss.azurecr.io/mern-frontend:v1.0 . 
 ```
 
-8. login to azure ACR 
+10. login to azure ACR 
 
 ``` 
 az acr login --name mernvmss 
 ``` 
 
-9. push the initial frontend container 
+11. push the initial frontend container 
 
 ``` 
 docker push mernvmss.azurecr.io/mern-frontend:v1.0 
 ```
+12. get the following information and add to the terraform variable file in Terraform/frontend
 
-10. get the following information and add to the terraform variable file in Terraform/app
-
-    - packer image ID
-    
-11. get the following information and add to the terraform variable file in Terraform/frontend
-
- - azure container registry server name
+    - azure container registry server name
 
         ``` 
         az acr show --name mernvmss | jq '.loginServer' 
@@ -208,30 +211,12 @@ docker push mernvmss.azurecr.io/mern-frontend:v1.0
         ``` 
         az acr credential show --name mernvmss --resource-group mern-app | jq '.passwords[0].value' 
         ```
-    - container image name 
+    - container image name (mernvmss.azurecr.io/mern-frontend:v1.0)
 
     NOTE: in production, don't store these values in plain text, create them as azure key value secrets
 
 
-12. deploy the terraform code for the application
-
-``` 
-cd Terraform/app 
-terraform init 
-terraform plan 
-terraform apply -auto-approve 
-```
-
-13. once the application layer is deployed, get the frontend ip address of the load balancer, add the IP to frontend/src/config/config.json
-    - the file should look like this 
-
-    ```
-    { 
-    "SERVER_URL": "http://20.12.242.10"
-    }
-    ```
-
-14. deploy the frontend terraform 
+13. deploy the frontend terraform 
 
 ```
 cd Terraform/frontend
@@ -240,7 +225,7 @@ terraform plan
 terraform apply 
 ```
 
-15. the application should be fully deployed at this point, if you want to test the CI/CD portion, continue to the next set of instructions.
+14. the application should be fully deployed at this point, if you want to test the CI/CD portion, continue to the next set of instructions.
 
     - if you want to destroy the application, skip to the bottom
 
@@ -307,6 +292,8 @@ terraform destroy -auto-approve
 cd Terraform/app
 terraform destroy -auto-approve
 ```
+
+make sure to delete the image that was created
 
 3. destroy the underlying infrastructure
 ```

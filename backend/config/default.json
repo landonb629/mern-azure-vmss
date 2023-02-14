@@ -2,6 +2,6 @@
     "db": {
         "username": "mern-app-demo",
         "password": "",
-        "url": ""
+        "url": "mongodb://mern-app-demo.mongo.cosmos.azure.com:10255/users?ssl=true&replicaSet=globaldb"
     }
 }
