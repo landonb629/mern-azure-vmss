@@ -8,7 +8,7 @@ const url = config.get('db.url')
 
 const dbConnection = () => { 
     try {  
-        return mongoose.connect(url,{
+        return mongoose.connect( url ,{
             auth: { 
                 username: username,
                 password: password

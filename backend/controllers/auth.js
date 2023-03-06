@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken')
 
 const register = async (req, res) => { 
     try { 
+        console.log('hitting the register route')
         const {name,email, password} = req.body;
         const oldUser = await User.findOne({email})
         if (oldUser) { 
@@ -15,6 +16,7 @@ const register = async (req, res) => {
         const user = await User.create({...req.body});
         const token = await user.createJWT()
         console.log(user, token);
+
         res.status(200).json({
             user_id: user._id,
             token: token
@@ -30,7 +32,8 @@ const register = async (req, res) => {
 const getUser = async (req, res) => { 
     try { 
         const user = await User.find({})
-        res.status(200).json({user})
+        console.log('hitting the users route')
+        res.status(200).json({msg: 'getting the users'})
     } catch(error) { 
 
     }

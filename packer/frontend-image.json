@@ -15,7 +15,7 @@
         "subscription_id": "{{user `sub_id`}}",
         
         "managed_image_resource_group_name": "mern-app",
-        "managed_image_name": "prod-api-{{user `image`}}",
+        "managed_image_name": "prod-frontend-{{user `image`}}",
 
         "os_type": "Linux",
         "image_publisher": "Canonical",
@@ -23,8 +23,8 @@
         "image_sku": "18.04-LTS",
 
         "azure_tags": { 
-            "env": "dev",
-            "app": "express"
+            "env": "prod",
+            "app": "frontend"
         },
 
         "location": "East US",
@@ -33,17 +33,15 @@
     "provisioners": [
         {
             "type": "file",
-            "source": "./backend",
+            "source": "../frontend",
             "destination": "/tmp/"
         },
         {
         "execute_command": "chmod +x {{ .Path }}; {{ .Vars }} {{ .Path }}",
         "inline": [ 
             "sudo apt-get update",
-            "sudo apt-get upgrade -y",
             "sudo curl -s https://deb.nodesource.com/setup_16.x | sudo bash",
             "sudo apt-get install nodejs -y",
-            "sudo apt-get install libssl1.0-dev nodejs-dev node-gyp npm -y",
             "sudo apt-get install nginx -y"
         ],
         "inline_shebang": "/bin/sh -x",
@@ -51,30 +49,30 @@
     },
     {
         "type": "file",
-        "source": "default",
-        "destination": "/tmp/"
-    },
-    {
-        "type": "file",
-        "source": "pm2.service",
+        "source": "frontend.conf",
         "destination": "/tmp/"
     },
     {
         "execute_command": "chmod +x {{ .Path }}; {{ .Vars }} {{ .Path }}",
+        "inline": [
+            "cd /tmp/frontend",
+            "npm install",
+            "npm run build"
+        ]  ,
+        "inline_shebang": "/bin/sh -x",
+        "type": "shell"
+    },
+    {
+        "execute_command": "chmod +x {{ .Path }}; {{ .Vars }} {{ .Path }}",
         "inline": [ 
-            "sudo mv /tmp/default /etc/nginx/sites-enabled/default",
+            "sudo rm /etc/nginx/sites-enabled/default",
+            "sudo mv /tmp/frontend.conf /etc/nginx/sites-enabled/frontend.conf",
+            "sudo cp -r /tmp/frontend/build/* /var/www/html/",
             "sudo service nginx restart",
-            "sudo mkdir -p /var/www/public/app",
-            "sudo cp -r /tmp/backend/* /var/www/public/app",
-            "cd /var/www/public/app && sudo npm install && sudo npm install -g pm2",
-            "cd /var/www/public/app && sudo pm2 start app.js",
-            "sudo pm2 save",
-            "sudo pm2 startup"
-
+            "sudo systemctl enable nginx"
         ],
         "inline_shebang": "/bin/sh -x",
         "type": "shell"
     }
 ]
 }
-

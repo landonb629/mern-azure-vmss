@@ -8,19 +8,23 @@ services:
       - type: bind 
         source: ./backend
         target: /usr/src/app
-    ports:
+    expose: 
+      - 3031:3031
+    ports: 
       - 3031:3031
     tty: true
     stdin_open: true 
     depends_on:
       - db
     environment:
-      - NODE_ENV=production
+      - NODE_ENV=development
+
       
   frontend:
     build:
       context: ./frontend
       dockerfile: Dockerfile
+    command: ["npm", "start"]
     volumes:
       - type: bind
         source: ./frontend
@@ -39,6 +43,8 @@ services:
     volumes: 
       - db-volume:/data/db
     command: mongod --quiet --logpath /dev/null
+
+
 
 volumes:
   db-volume:

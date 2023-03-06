@@ -1,12 +1,3 @@
-/*
-Required Network infrastructure 
-- 1 vnet
-- 3 subnets
-- 3 nsgs 
-- 1 asg 
-
-
-*/
 resource "azurerm_resource_group" "rg" {
   name = var.rg_name
   location = var.location
@@ -52,7 +43,7 @@ resource "azurerm_network_security_group" "web" {
       access = "Allow"
       protocol = "Tcp"
       source_port_range = "*"
-      destination_port_range = "3031"
+      destination_port_range = "80"
       source_address_prefix = "*"
       destination_address_prefix = "*"
   }

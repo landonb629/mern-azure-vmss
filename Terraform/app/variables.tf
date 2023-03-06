@@ -2,8 +2,12 @@
 ## input required ##
 ####################
 
-variable "image-id" {
-  default = "/subscriptions/f80dea2d-81bb-442f-a102-d86eb72cb7d6/resourceGroups/mern-app/providers/Microsoft.Compute/images/prod-api-1"
+variable "api-image-id" {
+  default = ""
+}
+
+variable "frontend-image-id" {
+  default = ""
 }
 
 ###################
@@ -58,8 +62,12 @@ variable "api-lb" {
   default = "api-lb"
 }
 
-variable "vmss-name" {
+variable "api-vmss-name" {
   default = "api-vmss"
+}
+
+variable "frontend-vmss-name" {
+  default = "frontend-vmss"
 }
 
 variable "vmss-sku" {
@@ -70,17 +78,4 @@ variable "instance_count" {
   default = 2
 }
 
-variable "container_name" {
-  default = "mern-frontend1"
-}
-
-variable "container_ip_type" {
-  default  = "Public"
-}
-
-
-
-variable "container_os_type" {
-  default = "Linux"
-}
 

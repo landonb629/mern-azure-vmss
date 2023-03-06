@@ -6,8 +6,6 @@ At the same time, I have recently been working on learning to develop using MERN
 # Technologies used 
 🛠 Azure Load Balancer 
 
-🛠 Azure Container Instances
-
 🛠 Github Actions 
 
 🛠 Cosmo DB 
@@ -72,12 +70,6 @@ Backend:
 
     NOTE: this is not an official action, this is a run action that parses the output of an az cli command and uses JQ to parse / provide the id of the new image
 
-
-
-Below is an example scenario that would trigger the pipelines
-1. pull request is merged and code is pushed onto the main branch  
-
-
 # Steps to try on your own 
 
  Fork the repository 
@@ -135,18 +127,25 @@ terraform apply -auto-approve
  export PR=" " (just set this to a string like "starter-image")
 ```
 
-Build the packer image
+Build the packer images
 
 ``` 
 packer build app-image.json 
 ``` 
 
-** Copy the image ID output from the packer build
+```
+packer build frontend-image.json
+```
+
+
+
+** copy the outputted image IDs
 
 
 6. get the following information and add to the terraform variable file in Terraform/app
 
-    - packer image ID
+    - api-image-id
+    - frontend-image-id
 
 7. deploy the terraform code for the application
 
@@ -157,73 +156,6 @@ terraform plan
 terraform apply -auto-approve 
 ```
 
-
-8. once the application layer is deployed, get the frontend ip address of the load balancer, add the IP to frontend/src/config/config.json
-    ** NOTE: you can get the frontend ip address with this command 
-    ```
-     az network public-ip --resource-group mern-app -o table 
-    ```
-    - the file should look like this 
-
-    ```
-    { 
-    "SERVER_URL": "http://20.12.242.10"
-    }
-    ```
-
-9. build the frontend container locally 
-
-``` 
-cd frontend 
-```
-
-``` 
-docker build -f Dockerfile.prod -t mernvmss.azurecr.io/mern-frontend:v1.0 . 
-```
-
-10. login to azure ACR 
-
-``` 
-az acr login --name mernvmss 
-``` 
-
-11. push the initial frontend container 
-
-``` 
-docker push mernvmss.azurecr.io/mern-frontend:v1.0 
-```
-12. get the following information and add to the terraform variable file in Terraform/frontend
-
-    - azure container registry server name
-
-        ``` 
-        az acr show --name mernvmss | jq '.loginServer' 
-        ```
-
-    - azure container registry admin username
-
-        ``` 
-        az acr credential show --name mernvmss --resource-group mern-app | grep username 
-        ``` 
-
-    - azure container registry admin password 
-
-        ``` 
-        az acr credential show --name mernvmss --resource-group mern-app | jq '.passwords[0].value' 
-        ```
-    - container image name (mernvmss.azurecr.io/mern-frontend:v1.0)
-
-    NOTE: in production, don't store these values in plain text, create them as azure key value secrets
-
-
-13. deploy the frontend terraform 
-
-```
-cd Terraform/frontend
-terraform init
-terraform plan
-terraform apply 
-```
 
 14. the application should be fully deployed at this point, if you want to test the CI/CD portion, continue to the next set of instructions.
 
@@ -239,8 +171,6 @@ terraform apply
     - AZURE_SP_CREDENTIALS - This can be the entire json output you got from the azCli when you created the service principal
     - AZURE_SUB_ID - subscription id 
     - AZURE_TENANT_ID - tenant id
-    - ACR_PASSWORD - azure container registry password
-    - ACR_USERNAME - azure container registry password
 
 example of AZURE_SP_CREDENTIALS
 
@@ -278,12 +208,6 @@ example of AZURE_SP_CREDENTIALS
 
 
  # Destroying the project
-1. destroy the frontend terraform
-
-```
-cd Terraform/frontend
-terraform destroy -auto-approve
-```
 
 2. destroy the application terraform 
 
@@ -300,4 +224,25 @@ make sure to delete the image that was created
 cd Terraform/infra
 terraform destroy -auto-approve
 ```
+
+
+# What I gained from this project
+This project allowed me to get hands-on with some technology that I haven't used very much. 
+
+- Packer
+    - After diving into packer, I would say it comes higher in my list than ansible. Packer gives you the ability to build your virtual machine images from start to finish in a repeatable, reliable manner. I loved the consistency that I saw out of packer builds, as well as the "ease of use". Not having to setup a host file, and go through configuring an ansible controller was nice.
+
+- Virtual machine scale sets
+    - 
+
+- cosmosdb 
+    - 
+
+- nginx 
+
+- Nodejs and React
+
+- 
+
+
 

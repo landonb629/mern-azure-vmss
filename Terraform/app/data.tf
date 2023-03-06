@@ -9,3 +9,9 @@ data "azurerm_application_security_group" "asg" {
   resource_group_name = var.rg_name
 }
 
+data "azurerm_subnet" "web" {
+  name = "web"
+  virtual_network_name = "mern-app-vnet"
+  resource_group_name = var.rg_name
+}
+
