@@ -18,15 +18,12 @@ const Register = () => {
     const [request, setRequest] = useState(initialState);
     const [user, setUser] = useState('')
 
-
     // register a user and update the state value for user, to allow for redirect
     const onSubmit = async (e) => { 
         e.preventDefault()
         try { 
-            
             if (!request.isMember) {
                 const registerStatus = await registerUser(request);
-                console.log(registerStatus)
                 await checkUser(registerStatus);
             } else { 
                 const loginStatus = await loginUser(request);
@@ -47,7 +44,7 @@ const Register = () => {
             },
             body: JSON.stringify(data)
         }
-            const response = await fetch(`/api/v1/auth/register`, reqConfig)
+            const response = await fetch(`http://localhost:3032/api/v1/auth/register`, reqConfig)
             const returnData = await response.json();
             const {user_id, token } = returnData; // the data attribute is what holds the information sent back from the server 
             const payload = { 
@@ -67,7 +64,7 @@ const Register = () => {
                 },
                 body: JSON.stringify(data)
             }
-            const response = await fetch(`/api/v1/auth/login`, reqConfig)
+            const response = await fetch(`http://localhost:3032/api/v1/auth/login`, reqConfig)
             const returnData = await response.json();
             const {user_id, token } = returnData;
             const payload = { 
@@ -83,18 +80,19 @@ const Register = () => {
     // check user function 
     const checkUser = async (payload) => { 
         try { 
-            const {user_id} = payload;
+            const {user_id, token} = payload;
+            localStorage.setItem('token', token)
             setUser(user_id)
         } catch(error) { 
             console.log(error);
         }
     }
+
     // redirect is user is set
     useEffect(()=> { 
-
         if (user) { 
             navigate('/home')
-        }
+        } 
       },[user, navigate])
 
     const changeHandler = (e) => { 

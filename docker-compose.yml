@@ -9,9 +9,9 @@ services:
         source: ./backend
         target: /usr/src/app
     expose: 
-      - 3031:3031
+      - 3032:3032
     ports: 
-      - 3031:3031
+      - 3032:3032
     tty: true
     stdin_open: true 
     depends_on:
