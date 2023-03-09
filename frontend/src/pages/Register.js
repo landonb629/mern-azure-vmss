@@ -87,13 +87,27 @@ const Register = () => {
             console.log(error);
         }
     }
+    const checkToken = async () => { 
+        try { 
+            const getToken = localStorage.getItem('token')
+            if (!getToken) { 
+                console.log('no token was found')
+            } else { 
+                navigate('/home')
+            }
+        } catch(error) { 
+            console.log('error')
+        }
+    }
+    
 
     // redirect is user is set
     useEffect(()=> { 
+        checkToken()
         if (user) { 
             navigate('/home')
         } 
-      },[user, navigate])
+      },[user])
 
     const changeHandler = (e) => { 
         setRequest({...request, [e.target.name]: e.target.value})

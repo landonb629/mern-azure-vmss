@@ -10,18 +10,19 @@ const Home = () => {
     const checkToken = () => { 
         const getToken = localStorage.getItem('token')
         setToken(getToken)
+        
+        console.log(token)
 
     }
     
     useEffect(()=> {
-        checkToken()
-        if (token !== '') { 
-          console.log('found a token')
-        } else {
-            navigate('/')
-        }
-        
-    },[navigate])
+       console.log('running the token check')
+       checkToken()
+       if (token !== '') { 
+        console.log('we should log the user in')
+       }
+       
+    },[])
     return <h1>Welcome to your Home page!</h1>
 }
 
