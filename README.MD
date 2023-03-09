@@ -1,12 +1,10 @@
 # Project Description / Motivations
-I got the idea for this project when I was looking through some azure load balancer documentation, and saw that azure LB does not support a container instance backend. I looked through the services that it does support, and saw that virtual machine scale sets were one of them. I thought to myself that it has been a while since I used VMSS, probably haven't used them since I was working on the AZ-104. So, I wanted to build a project that used VMSS, and utilizes some other cloud / devops technologies.
+I had the idea for this project when I was looking through some azure load balancer documentation, and saw that azure LB does not support a container instance backend. I looked through the services that it does support, and saw that virtual machine scale sets were one of them. I thought to myself that it has been a while since I used VMSS, probably haven't used them since I was working on the AZ-104. So, I wanted to build a project that used VMSS, and utilizes some other cloud / devops technologies.
 
 At the same time, I have recently been working on learning to develop using MERN. I have always had an interest in learning web development, to use it as a tool to allow me to build more advanced projects, and help me support applications in the work environment. I figured this would be the perfect project for me to host the code I have been working on. 
 
 # Technologies used 
 🛠 Azure Load Balancer 
-
-🛠 Azure Container Instances
 
 🛠 Github Actions 
 
@@ -72,49 +70,13 @@ Backend:
 
     NOTE: this is not an official action, this is a run action that parses the output of an az cli command and uses JQ to parse / provide the id of the new image
 
-
-
-Below is an example scenario that would trigger the pipelines
-1. pull request is merged and code is pushed onto the main branch  
-
-
 # Steps to try on your own 
 
  Fork the repository 
 
 1. az login 
 
-2. Create a storage account and container for your terraform backend (using az CLI)
-
-export your environment variables 
-
-```
-export storageAccountName=''
-export resourceGroupName=''
-export containerName=''
-export location=''
-
-```
-
-create the resource group
-
-```
-az group create --name $resourceGroupName --location $location 
-```
-
-create the storage account 
-
-```
-az storage account create --name $storageAccountName --resource-group $resourceGroupName --location eastus --sku Standard_LRS --kind StorageV2
-```
-
-create storage account container
-
-```
-az storage container create --name $containerName --account-name $storageAccountName --auth-mode login
-```
-
-3. deploy the terraform resources in the Terraform/infra directory
+2. deploy the terraform resources in the Terraform/infra directory
     - this deploys the underlying infrastructure (CosmosDB, Virtual Network, Security Groups)
 ``` 
 
@@ -125,7 +87,11 @@ terraform apply -auto-approve
 
 ```
 
-4. get the CosmosDB password, and URL from the azure console, add that password to backend/config/default.json
+3. get the CosmosDB password, with the command below, add that password to backend/config/default.json
+
+    ```
+    az cosmosdb keys list --name mern-app-demo --resource-group mern-app --type keys
+    ```
 
     example of what the file should look like
 
@@ -139,13 +105,19 @@ terraform apply -auto-approve
     }
     ```
 
-5. create an azure service principal 
+4. create an azure service principal, with the role of contributor at the subscription level
 
-    ``` 
-    az ad sp create-for-rbac --name $name --role $role --scope /subscriptions/{subID}
+    NOTE: you can get your subscription ID with the following command, copy the "id" 
+
+    ```
+    az account show 
     ```
 
-6. export the required environment variables for the packer template, to build the template locally (you can hardcode them if you want)
+    ``` 
+    az ad sp create-for-rbac --name $name --role $role --scope /subscriptions/{subID} --sdk-auth
+    ```
+
+5. export the required environment variables for the packer template, to build the template locally (you can hardcode them if you want)
 
 ```
  export AZURE_CLIENT_ID=" "
@@ -155,65 +127,27 @@ terraform apply -auto-approve
  export PR=" " (just set this to a string like "starter-image")
 ```
 
-Build the packer image
+Build the packer images
 
 ``` 
 packer build app-image.json 
 ``` 
 
-** Copy the image ID output from the packer build
-
-7. build the frontend container locally 
-
-``` 
-cd frontend 
+```
+packer build frontend-image.json
 ```
 
-``` 
-docker build -f Dockerfile.prod -t mernvmss.azurecr.io/mern-frontend:v1.0 . 
-```
-
-8. login to azure ACR 
-
-``` 
-az acr login --name mernvmss 
-``` 
-
-9. push the initial frontend container 
-
-``` 
-docker push mernvmss.azurecr.io/mern-frontend:v1.0 
-```
-
-10. get the following information and add to the terraform variable file in Terraform/app
-
-    - packer image ID
-    
-11. get the following information and add to the terraform variable file in Terraform/frontend
-
- - azure container registry server name
-
-        ``` 
-        az acr show --name mernvmss | jq '.loginServer' 
-        ```
-
-    - azure container registry admin username
-
-        ``` 
-        az acr credential show --name mernvmss --resource-group mern-app | grep username 
-        ``` 
-
-    - azure container registry admin password 
-
-        ``` 
-        az acr credential show --name mernvmss --resource-group mern-app | jq '.passwords[0].value' 
-        ```
-    - container image name 
-
-    NOTE: in production, don't store these values in plain text, create them as azure key value secrets
 
 
-12. deploy the terraform code for the application
+** copy the outputted image IDs
+
+
+6. get the following information and add to the terraform variable file in Terraform/app
+
+    - api-image-id
+    - frontend-image-id
+
+7. deploy the terraform code for the application
 
 ``` 
 cd Terraform/app 
@@ -222,25 +156,8 @@ terraform plan
 terraform apply -auto-approve 
 ```
 
-13. once the application layer is deployed, get the frontend ip address of the load balancer, add the IP to frontend/src/config/config.json
-    - the file should look like this 
 
-    ```
-    { 
-    "SERVER_URL": "http://20.12.242.10"
-    }
-    ```
-
-14. deploy the frontend terraform 
-
-```
-cd Terraform/frontend
-terraform init
-terraform plan
-terraform apply 
-```
-
-15. the application should be fully deployed at this point, if you want to test the CI/CD portion, continue to the next set of instructions.
+14. the application should be fully deployed at this point, if you want to test the CI/CD portion, continue to the next set of instructions.
 
     - if you want to destroy the application, skip to the bottom
 
@@ -254,8 +171,6 @@ terraform apply
     - AZURE_SP_CREDENTIALS - This can be the entire json output you got from the azCli when you created the service principal
     - AZURE_SUB_ID - subscription id 
     - AZURE_TENANT_ID - tenant id
-    - ACR_PASSWORD - azure container registry password
-    - ACR_USERNAME - azure container registry password
 
 example of AZURE_SP_CREDENTIALS
 
@@ -293,12 +208,6 @@ example of AZURE_SP_CREDENTIALS
 
 
  # Destroying the project
-1. destroy the frontend terraform
-
-```
-cd Terraform/frontend
-terraform destroy -auto-approve
-```
 
 2. destroy the application terraform 
 
@@ -308,9 +217,32 @@ cd Terraform/app
 terraform destroy -auto-approve
 ```
 
+make sure to delete the image that was created
+
 3. destroy the underlying infrastructure
 ```
 cd Terraform/infra
 terraform destroy -auto-approve
 ```
+
+
+# What I gained from this project
+This project allowed me to get hands-on with some technology that I haven't used very much. 
+
+- Packer
+    - After diving into packer, I would say it comes higher in my list than ansible. Packer gives you the ability to build your virtual machine images from start to finish in a repeatable, reliable manner. I loved the consistency that I saw out of packer builds, as well as the "ease of use". Not having to setup a host file, and go through configuring an ansible controller was nice.
+
+- Virtual machine scale sets
+    - 
+
+- cosmosdb 
+    - 
+
+- nginx 
+
+- Nodejs and React
+
+- 
+
+
 

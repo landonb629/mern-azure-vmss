@@ -8,7 +8,7 @@ const url = config.get('db.url')
 
 const dbConnection = () => { 
     try {  
-        return mongoose.connect(url,{
+        return mongoose.connect( url ,{
             auth: { 
                 username: username,
                 password: password
@@ -23,4 +23,16 @@ const dbConnection = () => {
     }
 }
 
-module.exports = dbConnection
+const devConnection = async () => { 
+    try { 
+        return mongoose.connect( "mongodb://db:27017", { 
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+            retryWrites: false
+        })
+    } catch(error) { 
+        console.log(error)
+    }
+}
+
+module.exports = {devConnection, dbConnection}

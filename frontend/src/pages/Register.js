@@ -3,7 +3,8 @@ import { useState, useEffect } from 'react';
 import axios from 'axios'
 import FormRow from '../components/formRow'
 import { useNavigate } from 'react-router-dom';
-import configdata from "../config/config.json"
+import config from '../config/config.json'
+
 
 const initialState = {
     name: '',
@@ -16,7 +17,6 @@ const Register = () => {
     const navigate = useNavigate();
     const [request, setRequest] = useState(initialState);
     const [user, setUser] = useState('')
-
 
     // register a user and update the state value for user, to allow for redirect
     const onSubmit = async (e) => { 
@@ -36,25 +36,37 @@ const Register = () => {
 
     //request function 
     const registerUser = async(data) => { 
-        try { 
-            const response = await axios.post(`${configdata.SERVER_URL}:3031/api/v1/auth/register`, data)
-            const returnData = await response;
-            const {user_id, token } = returnData.data; // the data attribute is what holds the information sent back from the server 
+        const reqConfig = {
+            method: 'POST',
+            headers: { 
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        }
+            const response = await fetch(`http://localhost:3032/api/v1/auth/register`, reqConfig)
+            const returnData = await response.json();
+            const {user_id, token } = returnData; // the data attribute is what holds the information sent back from the server 
             const payload = { 
                 user_id: user_id,
                 token: token
             }
             return payload;
-        } catch (error) { 
-            console.log(error)
-        }
     }
 
     const loginUser = async(data) => { 
         try {
-            const response = await axios.post(`${configdata.SERVER_URL}:3031/api/v1/auth/login/`, data)
-            const returnData = await response;
-            const {user_id, token } = returnData.data;
+            const reqConfig = {
+                method: 'POST',
+                headers: { 
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            }
+            const response = await fetch(`http://localhost:3032/api/v1/auth/login`, reqConfig)
+            const returnData = await response.json();
+            const {user_id, token } = returnData;
             const payload = { 
                 user_id: user_id,
                 token: token
@@ -68,19 +80,34 @@ const Register = () => {
     // check user function 
     const checkUser = async (payload) => { 
         try { 
-            const {user_id} = payload;
+            const {user_id, token} = payload;
+            localStorage.setItem('token', token)
             setUser(user_id)
         } catch(error) { 
             console.log(error);
         }
     }
+    const checkToken = async () => { 
+        try { 
+            const getToken = localStorage.getItem('token')
+            if (!getToken) { 
+                console.log('no token was found')
+            } else { 
+                navigate('/home')
+            }
+        } catch(error) { 
+            console.log('error')
+        }
+    }
+    
+
     // redirect is user is set
     useEffect(()=> { 
-
+        checkToken()
         if (user) { 
             navigate('/home')
-        }
-      },[user, navigate])
+        } 
+      },[user])
 
     const changeHandler = (e) => { 
         setRequest({...request, [e.target.name]: e.target.value})

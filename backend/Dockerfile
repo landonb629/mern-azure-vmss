@@ -8,6 +8,8 @@ COPY package-lock.json .
 
 RUN npm install 
 
-EXPOSE 6060
+COPY . /usr/src/app/
+
+EXPOSE 3031
 
 ENTRYPOINT ["npm", "start"]

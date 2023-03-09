@@ -1,0 +1,78 @@
+{ 
+    "variables": {
+        "image": "{{env `PR`}}",
+        "client_id": "{{env `AZURE_CLIENT_ID`}}",
+        "client_secret": "{{env `AZURE_CLIENT_SECRET`}}",
+        "tenant_id": "{{env `AZURE_TENANT_ID`}}",
+        "sub_id": "{{env `AZURE_SUB_ID`}}"
+    },
+    "builders": [{
+        "type": "azure-arm",
+
+        "client_id": "{{user `client_id`}}",
+        "client_secret": "{{user `client_secret`}}",
+        "tenant_id": "{{user `tenant_id`}}",
+        "subscription_id": "{{user `sub_id`}}",
+        
+        "managed_image_resource_group_name": "mern-app",
+        "managed_image_name": "prod-frontend-{{user `image`}}",
+
+        "os_type": "Linux",
+        "image_publisher": "Canonical",
+        "image_offer": "UbuntuServer",
+        "image_sku": "18.04-LTS",
+
+        "azure_tags": { 
+            "env": "prod",
+            "app": "frontend"
+        },
+
+        "location": "East US",
+        "vm_size": "Standard_B1s"
+    }],
+    "provisioners": [
+        {
+            "type": "file",
+            "source": "../frontend",
+            "destination": "/tmp/"
+        },
+        {
+        "execute_command": "chmod +x {{ .Path }}; {{ .Vars }} {{ .Path }}",
+        "inline": [ 
+            "sudo apt-get update",
+            "sudo curl -s https://deb.nodesource.com/setup_16.x | sudo bash",
+            "sudo apt-get install nodejs -y",
+            "sudo apt-get install nginx -y"
+        ],
+        "inline_shebang": "/bin/sh -x",
+        "type": "shell"
+    },
+    {
+        "type": "file",
+        "source": "frontend.conf",
+        "destination": "/tmp/"
+    },
+    {
+        "execute_command": "chmod +x {{ .Path }}; {{ .Vars }} {{ .Path }}",
+        "inline": [
+            "cd /tmp/frontend",
+            "npm install",
+            "npm run build"
+        ]  ,
+        "inline_shebang": "/bin/sh -x",
+        "type": "shell"
+    },
+    {
+        "execute_command": "chmod +x {{ .Path }}; {{ .Vars }} {{ .Path }}",
+        "inline": [ 
+            "sudo rm /etc/nginx/sites-enabled/default",
+            "sudo mv /tmp/frontend.conf /etc/nginx/sites-enabled/frontend.conf",
+            "sudo cp -r /tmp/frontend/build/* /var/www/html/",
+            "sudo service nginx restart",
+            "sudo systemctl enable nginx"
+        ],
+        "inline_shebang": "/bin/sh -x",
+        "type": "shell"
+    }
+]
+}

@@ -78,9 +78,6 @@ variable "container_os_type" {
   default = "Linux"
 }
 
-variable "image-id" {
-  default = "/subscriptions/f80dea2d-81bb-442f-a102-d86eb72cb7d6/resourceGroups/express-js-vmss/providers/Microsoft.Compute/images/prod-api-1"
-}
 
 variable "container_registry" {
   default = "mernvmss"
