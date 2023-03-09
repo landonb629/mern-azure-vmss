@@ -23,4 +23,16 @@ const dbConnection = () => {
     }
 }
 
-module.exports = dbConnection
+const devConnection = async () => { 
+    try { 
+        return mongoose.connect( "mongodb://db:27017", { 
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+            retryWrites: false
+        })
+    } catch(error) { 
+        console.log(error)
+    }
+}
+
+module.exports = {devConnection, dbConnection}

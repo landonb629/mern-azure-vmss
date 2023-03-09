@@ -52,6 +52,7 @@
     {
         "execute_command": "chmod +x {{ .Path }}; {{ .Vars }} {{ .Path }}",
         "inline": [ 
+            "export NODE_ENV=production",
             "sudo mv /tmp/default /etc/nginx/sites-enabled/default",
             "sudo service nginx restart",
             "sudo mkdir -p /var/www/public/app",
