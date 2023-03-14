@@ -1,11 +1,9 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 
 const Home = () => { 
     const [token, setToken] = useState('')
-    const navigate = useNavigate()
 
     
     
@@ -13,9 +11,6 @@ const Home = () => {
         const checkToken = () => { 
             const getToken = localStorage.getItem('token')
             setToken(getToken)
-            
-            console.log(token)
-    
         }
        checkToken()       
     },[])
