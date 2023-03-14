@@ -10,9 +10,6 @@ const Home = () => {
     const checkToken = () => { 
         const getToken = localStorage.getItem('token')
         setToken(getToken)
-        
-        console.log(token)
-
     }
     
     useEffect(()=> {
@@ -23,7 +20,7 @@ const Home = () => {
        }
        
     },[])
-    return <h1>Welcome to your Home page!</h1>
+    return <h1>Welcome to your Home page! rolling update complete</h1>
 }
 
 

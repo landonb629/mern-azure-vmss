@@ -57,9 +57,8 @@ For both frontend and backend CD, they trigger on a closed pull request to the m
 Frontend: 
 - checkout code
 - login to azure
-- login to ACR 
-- build the docker image
-- rollout the new ACI container 
+- build the frontend packer image
+- trigger a vmss rolling update 
 
 Backend:
 - checkout code
@@ -130,14 +129,10 @@ terraform apply -auto-approve
 Build the packer images
 
 ``` 
+cd packer
 packer build app-image.json 
-``` 
-
-```
 packer build frontend-image.json
-```
-
-
+``` 
 
 ** copy the outputted image IDs
 

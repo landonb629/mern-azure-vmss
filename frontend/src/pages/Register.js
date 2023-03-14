@@ -44,7 +44,7 @@ const Register = () => {
             },
             body: JSON.stringify(data)
         }
-            const response = await fetch(`http://localhost:3032/api/v1/auth/register`, reqConfig)
+            const response = await fetch(`/api/v1/auth/register`, reqConfig)
             const returnData = await response.json();
             const {user_id, token } = returnData; // the data attribute is what holds the information sent back from the server 
             const payload = { 
@@ -64,7 +64,7 @@ const Register = () => {
                 },
                 body: JSON.stringify(data)
             }
-            const response = await fetch(`http://localhost:3032/api/v1/auth/login`, reqConfig)
+            const response = await fetch(`/api/v1/auth/login`, reqConfig)
             const returnData = await response.json();
             const {user_id, token } = returnData;
             const payload = { 
