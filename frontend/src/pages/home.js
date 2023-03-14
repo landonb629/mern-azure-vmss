@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 const Home = () => { 
     const [token, setToken] = useState('')
+    const navigate = useNavigate()
 
     
     
@@ -12,10 +13,13 @@ const Home = () => {
         const checkToken = () => { 
             const getToken = localStorage.getItem('token')
             setToken(getToken)
+            
+            console.log(token)
+    
         }
-       checkToken()
+       checkToken()       
     },[])
-    return <h1>Welcome to your Home page! rolling update complete</h1>
+    return <h1>Welcome to your Home page!</h1>
 }
 
 
