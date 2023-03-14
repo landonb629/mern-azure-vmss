@@ -21,7 +21,7 @@ At the same time, I have recently been working on learning to develop using MERN
 
 # Architecture 
 
-![Architecture](/Architecture.png?raw=true "Architecture")
+![Architecture](images/Architecture.png?raw=true "Architecture")
 
 
 # CI/CD process
@@ -155,6 +155,13 @@ terraform apply -auto-approve
 14. the application should be fully deployed at this point, if you want to test the CI/CD portion, continue to the next set of instructions.
 
     - if you want to destroy the application, skip to the bottom
+
+# How to check if the application is working?
+
+1. locate the frontend IP address of your public load balancer
+2. put the IP address in your browser 
+3. type in a name, email, and password and click "register"
+4. you should be redirected to a page that says "welcome to your home page"
 
 # setup for CI/CD
 

@@ -85,22 +85,23 @@ const Register = () => {
             console.log(error);
         }
     }
-    const checkToken = async () => { 
-        try { 
-            const getToken = localStorage.getItem('token')
-            if (!getToken) { 
-                console.log('no token was found')
-            } else { 
-                navigate('/home')
-            }
-        } catch(error) { 
-            console.log('error')
-        }
-    }
+    
     
 
     // redirect is user is set
     useEffect(()=> { 
+        const checkToken = async () => { 
+            try { 
+                const getToken = localStorage.getItem('token')
+                if (!getToken) { 
+                    console.log('no token was found')
+                } else { 
+                    navigate('/home')
+                }
+            } catch(error) { 
+                console.log('error')
+            }
+        }
         checkToken()
         if (user) { 
             navigate('/home')
