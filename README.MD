@@ -208,7 +208,6 @@ example of AZURE_SP_CREDENTIALS
  8. done
 
 
-
  # Destroying the project
 
 2. destroy the application terraform 
@@ -223,27 +222,10 @@ make sure to delete the image that was created
 
 3. destroy the underlying infrastructure
 ```
+Manually delete the images that were build from CI/CD and local
 cd Terraform/infra
 terraform destroy -auto-approve
 ```
-
-
-# What I gained from this project
-This project allowed me to get hands-on with some technology that I haven't used very much. 
-
-- Packer
-    - After diving into packer, I would say it comes higher in my list than ansible. Packer gives you the ability to build your virtual machine images from start to finish in a repeatable, reliable manner. I loved the consistency that I saw out of packer builds, as well as the "ease of use". Not having to setup a host file, and go through configuring an ansible controller was nice.
-
-- Virtual machine scale sets
-    - 
-
-- cosmosdb 
-    - 
-
-- nginx 
-
-- Nodejs and React
-
 - 
 
 
