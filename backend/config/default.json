@@ -1,7 +1,7 @@
 {
     "db": {
-        "username": "mern-app-demo",
-        "password": "",
-        "url": ""
+       "username": "mern-app-demo",
+       "password": "zIroeyAtQhjMWYOpCjBm3bgIJTy6SjevBcw9Ck9mqcqQqF8GoMxSSf4QxOB90lQnIin0lWSj0RVNACDbyc5wjQ==",
+       "url": "mongodb://mern-app-demo.mongo.cosmos.azure.com:10255/users?ssl=true&replicaSet=globaldb"
     }
 }

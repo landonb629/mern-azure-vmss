@@ -1,9 +1,7 @@
 import { React } from 'react';
 import { useState, useEffect } from 'react';
-import axios from 'axios'
 import FormRow from '../components/formRow'
 import { useNavigate } from 'react-router-dom';
-import config from '../config/config.json'
 
 
 const initialState = {
@@ -44,7 +42,7 @@ const Register = () => {
             },
             body: JSON.stringify(data)
         }
-            const response = await fetch(`http://localhost:3032/api/v1/auth/register`, reqConfig)
+            const response = await fetch(`/api/v1/auth/register`, reqConfig)
             const returnData = await response.json();
             const {user_id, token } = returnData; // the data attribute is what holds the information sent back from the server 
             const payload = { 
@@ -64,7 +62,7 @@ const Register = () => {
                 },
                 body: JSON.stringify(data)
             }
-            const response = await fetch(`http://localhost:3032/api/v1/auth/login`, reqConfig)
+            const response = await fetch(`/api/v1/auth/login`, reqConfig)
             const returnData = await response.json();
             const {user_id, token } = returnData;
             const payload = { 
@@ -87,22 +85,23 @@ const Register = () => {
             console.log(error);
         }
     }
-    const checkToken = async () => { 
-        try { 
-            const getToken = localStorage.getItem('token')
-            if (!getToken) { 
-                console.log('no token was found')
-            } else { 
-                navigate('/home')
-            }
-        } catch(error) { 
-            console.log('error')
-        }
-    }
+    
     
 
     // redirect is user is set
     useEffect(()=> { 
+        const checkToken = async () => { 
+            try { 
+                const getToken = localStorage.getItem('token')
+                if (!getToken) { 
+                    console.log('no token was found')
+                } else { 
+                    navigate('/home')
+                }
+            } catch(error) { 
+                console.log('error')
+            }
+        }
         checkToken()
         if (user) { 
             navigate('/home')

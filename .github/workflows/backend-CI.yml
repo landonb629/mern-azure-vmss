@@ -13,6 +13,7 @@ env:
 jobs:
   packer-build:
     runs-on: ubuntu-latest
+      
     steps:
       - name: checkout repo
         uses: actions/checkout@v3
@@ -22,10 +23,11 @@ jobs:
         with:
           version: latest
     
-      
       - name: running packer validate 
+        working-directory: ./packer
         run: |
           packer validate app-image.json
+          packer validate frontend-image.json
       
       
     
