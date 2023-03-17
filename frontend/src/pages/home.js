@@ -13,7 +13,7 @@ const Home = () => {
        checkToken()       
     },[])
 
-    return <h1>Welcome to your Home page! change made from CI/CD</h1>
+    return <h1>Welcome to your Home page!</h1>
 }
 
 
