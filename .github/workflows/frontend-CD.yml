@@ -12,39 +12,30 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./frontend
     steps:
-      - name: checkout repository
+      - name: checkout repo
         uses: actions/checkout@v3
-
+      
+      - name: setup packer
+        uses: hashicorp/setup-packer@main
+        with:
+          version: latest
+      
       - name: login to azure
         uses: azure/login@v1
         with:
           creds: ${{secrets.AZURE_SP_CREDENTIALS}}
-    
-      - name: login to ACR 
-        uses: azure/docker-login@v1
-        with:
-          login-server: mernvmss.azurecr.io 
-          username: ${{secrets.ACR_USERNAME}}
-          password: ${{secrets.ACR_PASSWORD}}
-    
-      - name: building the docker image 
-        run: | 
-          docker build -f Dockerfile.prod -t mernvmss.azurecr.io/mern-frontend:${{github.sha}} .
-          docker push mernvmss.azurecr.io/mern-frontend:${{github.sha}}
       
-      - name: roll out new version of frontend
-        uses: azure/aci-deploy@v1
-        with:
-          resource-group: mern-app
-          dns-name-label: mern-frontend-app
-          image: mernvmss.azurecr.io/mern-frontend:${{github.sha}}
-          registry-login-server: mernvmss.azurecr.io
-          registry-username: ${{secrets.ACR_USERNAME}}
-          registry-password: ${{secrets.ACR_PASSWORD}}
-          name: mern-frontend1
-          location: 'eastus'
-          ports: 3000
+      - name: running packer build 
+        run: |
+          cd packer
+          packer build frontend-image.json
+# will need to run packer build here but, these are the commands that will be needed to run in order to get the image ID 
+
+      - name: trigger rolling deployment
+        run: |
+           NAME="prod-frontend-${PR}"
+           GETID="$(az image list | jq -r '.[] | select(.name=='\"$NAME\"') | .id')"
+           IMAGEID=$GETID
+           echo $IMAGEID
+           az vmss update --name frontend-vmss --resource-group mern-app --set virtualMachineProfile.storageProfile.imageReference.id=$IMAGEID

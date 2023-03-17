@@ -5,8 +5,7 @@ import { useEffect, useState } from 'react';
 const Home = () => { 
     const [token, setToken] = useState('')
 
-    
-    
+
     useEffect(()=> {
         const checkToken = () => { 
             const getToken = localStorage.getItem('token')
