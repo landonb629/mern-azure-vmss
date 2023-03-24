@@ -1,7 +1,16 @@
 # Project Description / Motivations
-I had the idea for this project when I was looking through some azure load balancer documentation, and saw that azure LB does not support a container instance backend. I looked through the services that it does support, and saw that virtual machine scale sets were one of them. I thought to myself that it has been a while since I used VMSS, probably haven't used them since I was working on the AZ-104. So, I wanted to build a project that used VMSS, and utilizes some other cloud / devops technologies.
+The idea for this project came from looking at some azure load balancer documentation, I saw that azure LB doesn't support a container instance backend. I noticed that vm scale sets was one of the supported backends, It's been a very long time since I used them so, I wanted to build a project that utilized them! 
 
-At the same time, I have recently been working on learning to develop using MERN. I have always had an interest in learning web development, to use it as a tool to allow me to build more advanced projects, and help me support applications in the work environment. I figured this would be the perfect project for me to host the code I have been working on. 
+At the same time, I have recently been working on learning to develop using MERN. I have always had an interest in learning web development, mostly to use it as a tool to allow me to build more advanced projects, and help me support applications in a work environment. I figured this would be the perfect project for me to host the code I have been working on. 
+
+# The code 
+This is not "production" level code by any means. The code That is written for this application is to reinforce the concept of authentication for a fullstack application. Therefore, the functionality of this application is to do just that, log you in. Once you login, the application has no function.
+
+some of the concepts that I wanted to test myself on with this project from a development standpoint are:
+- password hashing 
+- fetching / posting data to/from an API 
+- state management 
+- handling cookies on the frontend / backend
 
 # Technologies used 
 🛠 Azure Load Balancer 
